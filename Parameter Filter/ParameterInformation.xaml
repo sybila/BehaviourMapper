@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Parameter_Filter.ParameterInformation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="350">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="120" />
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.RowSpan="2" Text="{Binding Mask, Mode=OneWay}" TextWrapping="Wrap" />
+        <TextBlock Grid.Column="1" Margin="10,5,10,5"><Run Text="Witnesses: " /><Run Text="{Binding WitnessCount, Mode=OneWay}" /></TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,5,10,5"><Run Text="Shortest: " /><Run Text="{Binding ShortestWitness, Mode=OneWay}" /></TextBlock>
+    </Grid>
+</UserControl>
