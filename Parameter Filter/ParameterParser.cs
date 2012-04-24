@@ -27,6 +27,8 @@ namespace Parameter_Filter
                     else
                         param.AddWitness(new Witness(line.Split(new string[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries)));
                 }
+
+                yield return param;
             }
         }
     }
