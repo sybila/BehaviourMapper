@@ -15,11 +15,17 @@ namespace Parameter_Filter
         public int WitnessCount { get { return ((Parameters == null) ? 0 : Parameters.SelectMany(p => p.Witnesses).Distinct().Count()); } }
 
         private IEnumerable<Parameter> parameters;
+        private IEnumerable<Parameter> _filteredParameters;
         public IEnumerable<Parameter> Parameters
         {
-            get
+            get { return _filteredParameters; }
+            set
             {
-                return parameters.Where(p => Filters.GetActiveFilters().All(f => f(p))).OrderBy(p => p.WitnessCount).OrderBy(p => p.ShortestWitness);
+                _filteredParameters = value
+                    .Where(p => Filters.GetActiveFilters().All(f => f(p)))
+                    .OrderBy(p => p, new ParameterByWitnessesComparer())
+                    .ToArray();
+                RaisePropertyChanged("Parameters");
             }
         }
 
@@ -33,12 +39,40 @@ namespace Parameter_Filter
             Statistic = new ParameterStatistic(this);
         }
 
-        public void Refresh()
+        public void Refresh(bool tighten)
         {
-            RaisePropertyChanged("Parameters");
+            if (tighten)
+                Parameters = Parameters;
+            else
+                Parameters = parameters;
+
             RaisePropertyChanged("ParameterCount");
             RaisePropertyChanged("WitnessCount");
             Statistic.Refresh();
+        }
+
+        private class ParameterByWitnessesComparer : IComparer<Parameter>
+        {
+            public int Compare(Parameter x, Parameter y)
+            {
+                if (x == null)
+                {
+                    if (y == null)
+                        return 0;
+
+                    return (-1);
+                }
+
+                if (y == null)
+                    return 1;
+
+                if (x.WitnessCount > y.WitnessCount)
+                    return 0;
+                else if (x.WitnessCount < y.WitnessCount)
+                    return (-1);
+
+                return x.ShortestWitness.CompareTo(y.ShortestWitness);
+            }
         }
 
         #region Commands
@@ -64,7 +98,8 @@ namespace Parameter_Filter
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     parameters = ParameterParser.Parse(diag.FileName).ToArray();
-                    RaisePropertyChanged("Parameters");
+                    Parameters = parameters;
+
                     RaisePropertyChanged("ParameterCount");
                     RaisePropertyChanged("WitnessCount");
 
@@ -75,6 +110,7 @@ namespace Parameter_Filter
                         p.CreateMask(RegulatoryContext);
 
                     Filters.SetBounds(parameters);
+                    Filters.RefreshRegulatoryContexts();
                     Statistic.Refresh();
                 }
             }
@@ -140,8 +176,13 @@ namespace Parameter_Filter
                 {
                     RegulatoryContext = new RegulatoryContext(diag.FileName);
                     if (parameters != null)
+                    {
                         foreach (Parameter p in parameters)
                             p.CreateMask(RegulatoryContext);
+
+                        Filters.RefreshRegulatoryContexts();
+                        Statistic.Refresh();
+                    }
                 }
             }
         }

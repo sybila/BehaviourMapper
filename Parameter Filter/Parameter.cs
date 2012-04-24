@@ -46,7 +46,7 @@ namespace Parameter_Filter
             ShortestWitness = (-1);
             Witnesses = new HashSet<Witness>();
 
-            this.Values = values.Split(',').Select(v => int.Parse(v));
+            this.Values = values.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries).Select(v => int.Parse(v));
             Mask = "Unknown";
         }
 

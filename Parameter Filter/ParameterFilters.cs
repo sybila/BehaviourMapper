@@ -67,7 +67,7 @@ namespace Parameter_Filter
                 _witnessCountLowerBoundActive = value;
                 RaisePropertyChanged("WitnessCountLowerBoundActive");
 
-                set.Refresh();
+                set.Refresh(_witnessCountLowerBoundActive);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Parameter_Filter
                 _witnessCountUpperBoundActive = value;
                 RaisePropertyChanged("WitnessCountUpperBoundActive");
 
-                set.Refresh();
+                set.Refresh(_witnessCountUpperBoundActive);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Parameter_Filter
                 _witnessLengthLowerBoundActive = value;
                 RaisePropertyChanged("WitnessLengthLowerBoundActive");
 
-                set.Refresh();
+                set.Refresh(_witnessLengthLowerBoundActive);
             }
         }
 
@@ -199,7 +199,7 @@ namespace Parameter_Filter
                 _witnessLengthUpperBoundActive = value;
                 RaisePropertyChanged("WitnessLengthUpperBoundActive");
 
-                set.Refresh();
+                set.Refresh(_witnessLengthUpperBoundActive);
             }
         }
 
@@ -249,7 +249,7 @@ namespace Parameter_Filter
                 _allWitnessLengthLowerBoundActive = value;
                 RaisePropertyChanged("AllWitnessLengthLowerBoundActive");
 
-                set.Refresh();
+                set.Refresh(_allWitnessLengthLowerBoundActive);
             }
         }
 
@@ -265,7 +265,7 @@ namespace Parameter_Filter
                 _allWitnessLengthUpperBoundActive = value;
                 RaisePropertyChanged("AllWitnessLengthUpperBoundActive");
 
-                set.Refresh();
+                set.Refresh(_allWitnessLengthUpperBoundActive);
             }
         }
 
@@ -398,7 +398,7 @@ namespace Parameter_Filter
 
             filterChange
                 .Throttle(TimeSpan.FromSeconds(0.5))
-                .Subscribe(_ => set.Refresh());
+                .Subscribe(_ => set.Refresh(false));
 
             WitnessCountLowerBoundActive = false;
             WitnessCountUpperBoundActive = false;
@@ -413,7 +413,10 @@ namespace Parameter_Filter
 
             ShortestWitness = parameters.SelectMany(p => p.Witnesses).Select(w => w.Length).Min();
             LongestWitness = parameters.SelectMany(p => p.Witnesses).Select(w => w.Length).Max();
+        }
 
+        public void RefreshRegulatoryContexts()
+        {
             RaisePropertyChanged("RegulatoryContexts");
         }
 
@@ -454,13 +457,13 @@ namespace Parameter_Filter
         {
             ContextConstraints.Add(new ContextConstraint(ConstrainedContextIndex, set.RegulatoryContext.ContextMasks[ConstrainedContextIndex],
                 ContextConstraintType, CurrentContextConstraint, this));
-            set.Refresh();
+            set.Refresh(true);
         }
 
         public void RemoveContextConstraint(ContextConstraint constraint)
         {
             ContextConstraints.Remove(constraint);
-            set.Refresh();
+            set.Refresh(false);
         }
 
         #endregion
