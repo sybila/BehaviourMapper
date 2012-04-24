@@ -10,11 +10,25 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel Width="150">
+        <Menu Grid.ColumnSpan="3">
+            <MenuItem Header="File" >
+                <MenuItem Header="Import" Command="{Binding ImportCommand, Mode=OneTime}" />
+                <MenuItem Header="Export" Command="{Binding ExportCommand, Mode=OneTime}" />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand, Mode=OneTime}" />
+            </MenuItem>
+            <MenuItem Header="Model">
+                <MenuItem Header="Load Model" Command="{Binding LoadModelCommand, Mode=OneTime}" />
+                <MenuItem Header="Load Time Serie" Command="{Binding LoadTimeSerieCommand, Mode=OneTime}" IsEnabled="False" />
+                <MenuItem Header="Create Time Serie" Command="{Binding CreateTimeSerieCommand, Mode=OneTime}" IsEnabled="False" />
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Row="1" Width="150">
             <Button Margin="15,15,15,10"  Command="{Binding ImportCommand, Mode=OneTime}" Width="100">Import</Button>
             <Button Margin="15,15,15,10"  Command="{Binding ExportCommand, Mode=OneTime}" Width="100">Export</Button>
             <TextBlock Text="Selected" Margin="15,15,15,0" HorizontalAlignment="Center" />
@@ -24,11 +38,11 @@
             <TextBlock Text="witnesses." Margin="15,5,15,15" HorizontalAlignment="Center" />
         </StackPanel>
         
-        <local:FilterControls Grid.Column="1" DataContext="{Binding Filters, Mode=OneWay}" />
+        <local:FilterControls Grid.Column="1" Grid.Row="1" DataContext="{Binding Filters, Mode=OneWay}" />
 
-        <local:ParameterStatistics Grid.ColumnSpan="2" Grid.Row="1" Width="350" Margin="10,0,10,10"  DataContext="{Binding Statistic, Mode=OneTime}"/>
+        <local:ParameterStatistics Grid.ColumnSpan="2" Grid.Row="2" Width="350" Margin="10,0,10,10"  DataContext="{Binding Statistic, Mode=OneTime}"/>
         
-        <ListBox Grid.Column="2" Grid.RowSpan="2" ItemsSource="{Binding Parameters, Mode=OneWay}">
+        <ListBox Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Parameters, Mode=OneWay}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <local:ParameterInformation DataContext="{Binding}" Width="400" />

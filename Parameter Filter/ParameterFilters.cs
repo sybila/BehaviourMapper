@@ -305,7 +305,7 @@ namespace Parameter_Filter
 
         public IEnumerable<string> ContextConstraintTypes { get { return ContextConstraint.contextConstraintTypeConversion.Keys; } }
 
-        public IEnumerable<string> RegulatoryContexts { get { return RegulatoryContext.regulatoryContext.ContextMasks; } }
+        public IEnumerable<string> RegulatoryContexts { get { return ((set.RegulatoryContext == null) ? new string[] { } : set.RegulatoryContext.ContextMasks); } }
 
         private int _constrainedContextIndex;
         public int ConstrainedContextIndex
@@ -318,8 +318,8 @@ namespace Parameter_Filter
 
                 _constrainedContextIndex = value;
 
-                ContextMinimum = RegulatoryContext.regulatoryContext.MinimalValues[RegulatoryContext.regulatoryContext.ContextMasks[_constrainedContextIndex]];
-                ContextMaximum = RegulatoryContext.regulatoryContext.MaximalValues[RegulatoryContext.regulatoryContext.ContextMasks[_constrainedContextIndex]];
+                ContextMinimum = set.RegulatoryContext.MinimalValues[set.RegulatoryContext.ContextMasks[_constrainedContextIndex]];
+                ContextMaximum = set.RegulatoryContext.MaximalValues[set.RegulatoryContext.ContextMasks[_constrainedContextIndex]];
 
                 RaisePropertyChanged("ConstrainedContextIndex");
             }
@@ -452,7 +452,8 @@ namespace Parameter_Filter
 
         private void AddContextCommand()
         {
-            ContextConstraints.Add(new ContextConstraint(ConstrainedContextIndex, ContextConstraintType, CurrentContextConstraint, this));
+            ContextConstraints.Add(new ContextConstraint(ConstrainedContextIndex, set.RegulatoryContext.ContextMasks[ConstrainedContextIndex],
+                ContextConstraintType, CurrentContextConstraint, this));
             set.Refresh();
         }
 

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Parameter_Filter
@@ -23,6 +23,7 @@ namespace Parameter_Filter
             }
         }
 
+        public RegulatoryContext RegulatoryContext { get; private set; }
         public ParameterFilters Filters { get; private set; }
         public ParameterStatistic Statistic { get; private set; }
 
@@ -54,18 +55,24 @@ namespace Parameter_Filter
 
         private void ImportData()
         {
-            using (OpenFileDialog diag = new OpenFileDialog())
+            using (System.Windows.Forms.OpenFileDialog diag = new System.Windows.Forms.OpenFileDialog())
             {
                 diag.Filter = "Parameter Set File|*.PSF|Any File|*.*";
                 diag.Title = "Select Parameter Set to import.";
                 diag.CheckFileExists = true;
 
-                if (diag.ShowDialog() == DialogResult.OK)
+                if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    parameters = ParameterParser.Parse(diag.FileName);
+                    parameters = ParameterParser.Parse(diag.FileName).ToArray();
                     RaisePropertyChanged("Parameters");
                     RaisePropertyChanged("ParameterCount");
                     RaisePropertyChanged("WitnessCount");
+
+                    if (RegulatoryContext == null)
+                        RegulatoryContext = new RegulatoryContext(parameters.First().Values.Count());
+
+                    foreach (Parameter p in parameters)
+                        p.CreateMask(RegulatoryContext);
 
                     Filters.SetBounds(parameters);
                     Statistic.Refresh();
@@ -85,18 +92,56 @@ namespace Parameter_Filter
 
         private void ExportData()
         {
-            using (SaveFileDialog diag = new SaveFileDialog())
+            using (System.Windows.Forms.SaveFileDialog diag = new System.Windows.Forms.SaveFileDialog())
             {
                 diag.Filter = "Witness Plotter File|*.WPF";
                 diag.Title = "Save as";
 
-                if (diag.ShowDialog() == DialogResult.OK)
+                if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     using (StreamWriter sw = new StreamWriter(diag.FileName))
                     {
                         foreach (Witness w in Parameters.SelectMany(p => p.Witnesses))
                             sw.WriteLine(w.ToString());
                     }
+                }
+            }
+        }
+
+        private RelayCommand _exitCommand;
+        public ICommand ExitCommand
+        {
+            get
+            {
+                _exitCommand = _exitCommand ?? new RelayCommand(() => Application.Current.Shutdown());
+                return _exitCommand;
+            }
+        }
+
+        private RelayCommand _loadModelCommand;
+        public ICommand LoadModelCommand
+        {
+            get
+            {
+                _loadModelCommand = _loadModelCommand ?? new RelayCommand(() => LoadModel());
+                return _loadModelCommand;
+            }
+        }
+
+        private void LoadModel()
+        {
+            using (System.Windows.Forms.OpenFileDialog diag = new System.Windows.Forms.OpenFileDialog())
+            {
+                diag.Filter = "Parsybone Model File|*.dbm|Any File|*.*";
+                diag.Title = "Select model to load.";
+                diag.CheckFileExists = true;
+
+                if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    RegulatoryContext = new RegulatoryContext(diag.FileName);
+                    if (parameters != null)
+                        foreach (Parameter p in parameters)
+                            p.CreateMask(RegulatoryContext);
                 }
             }
         }

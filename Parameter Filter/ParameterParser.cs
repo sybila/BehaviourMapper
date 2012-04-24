@@ -21,8 +21,6 @@ namespace Parameter_Filter
                     {
                         if (param != null)
                             yield return param;
-                        else
-                            RegulatoryContext.Init(line.Split(',').Length);
 
                         param = new Parameter(line.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries)[0]);
                     }

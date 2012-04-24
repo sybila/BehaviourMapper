@@ -47,11 +47,7 @@ namespace Parameter_Filter
             Witnesses = new HashSet<Witness>();
 
             this.Values = values.Split(',').Select(v => int.Parse(v));
-            Mask = string.Join("; ",
-                this.Values
-                    .Zip(Enumerable.Range(0, values.Count()),
-                        (v, i) => string.Format("{0} = {1}", RegulatoryContext.regulatoryContext.ContextMasks[i], v))
-                    .ToArray());
+            Mask = "Unknown";
         }
 
         public void AddWitness(Witness witness)
@@ -61,6 +57,15 @@ namespace Parameter_Filter
 
             if ((ShortestWitness < 0) || (witness.Length < ShortestWitness))
                 ShortestWitness = witness.Length;
+        }
+
+        public void CreateMask(RegulatoryContext regContext)
+        {
+            Mask = string.Join("; ",
+                this.Values
+                    .Zip(Enumerable.Range(0, Values.Count()),
+                        (v, i) => string.Format("{0} = {1}", regContext.ContextMasks[i], v))
+                    .ToArray());
         }
 
         public override string ToString()

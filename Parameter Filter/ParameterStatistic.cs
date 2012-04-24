@@ -55,7 +55,7 @@ namespace Parameter_Filter
             {
                 for (int i = 0; i < set.Parameters.First().Values.Count(); i++)
                 {
-                    Context context = new Context(RegulatoryContext.regulatoryContext.ContextMasks[i]);
+                    Context context = new Context(set.RegulatoryContext.ContextMasks[i]);
 
                     foreach (int value in set.Parameters.Select(p => p.Values.ElementAt(i)))
                         context.AddValue(value);

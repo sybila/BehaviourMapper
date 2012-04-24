@@ -23,13 +23,13 @@ namespace Parameter_Filter
         public string ConstraintType { get; private set; }
         public int Constraint { get; private set; }
 
-        public ContextConstraint(int index, string type, int constraint, ParameterFilters parent)
+        public ContextConstraint(int index, string mask, string type, int constraint, ParameterFilters parent)
         {
             this.parent = parent;
 
             this.index = index;
 
-            Mask = RegulatoryContext.regulatoryContext.ContextMasks[index];
+            Mask = mask;
             ConstraintType = contextConstraintTypeConversion[type];
             Constraint = constraint;
         }

@@ -1,0 +1,25 @@
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Release\Parameter Filter.exe
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Release\Parameter Filter.pdb
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Release\System.Reactive.dll
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Release\WPFToolkit.Extended.dll
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Release\System.Reactive.xml
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter.csprojResolveAssemblyReference.cache
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\FilterControls.baml
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\ParameterInformation.baml
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\ParameterValueStatistic.baml
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\FilterControls.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\MainWindow.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\ParameterInformation.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\ParameterStatistics.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\ParameterValueStatistic.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\App.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter_MarkupCompile.cache
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter_MarkupCompile.lref
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\MainWindow.baml
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\ParameterStatistics.baml
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter.g.resources
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter_Filter.Properties.Resources.resources
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter.csproj.GenerateResource.Cache
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter.exe
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter.pdb

@@ -14,32 +14,32 @@
             <TextBlock Text="witnesses" Margin="5,5,5,0" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding WitnessCountUpperBoundActive}" Margin="5,5,5,0">At most</CheckBox>
-            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperWitnessCountBound}" Maximum="{Binding MaximumWitnessCount, Mode=OneWay}" Minimum="{Binding MinimumWitnessCount, Mode=OneWay}" />
+            <CheckBox IsChecked="{Binding WitnessCountUpperBoundActive, Mode=TwoWay}" Margin="5,5,5,0">At most</CheckBox>
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperWitnessCountBound, Mode=TwoWay}" Maximum="{Binding MaximumWitnessCount, Mode=OneWay}" Minimum="{Binding MinimumWitnessCount, Mode=OneWay}" />
             <TextBlock Text="witnesses" Margin="5,5,5,0" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding WitnessLengthLowerBoundActive}" Margin="5,5,5,0">Witness long at least</CheckBox>
-            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding LowerWitnessLengthBound}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
+            <CheckBox IsChecked="{Binding WitnessLengthLowerBoundActive, Mode=TwoWay}" Margin="5,5,5,0">Witness long at least</CheckBox>
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding LowerWitnessLengthBound, Mode=TwoWay}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding WitnessLengthUpperBoundActive}" Margin="5,5,5,0">Witness long at most</CheckBox>
-            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperWitnessLengthBound}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
+            <CheckBox IsChecked="{Binding WitnessLengthUpperBoundActive, Mode=TwoWay}" Margin="5,5,5,0">Witness long at most</CheckBox>
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperWitnessLengthBound, Mode=TwoWay}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding AllWitnessLengthLowerBoundActive}" Margin="5,5,5,0">All witnesses long at least</CheckBox>
-            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding LowerAllWitnessLengthBound}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
+            <CheckBox IsChecked="{Binding AllWitnessLengthLowerBoundActive, Mode=TwoWay}" Margin="5,5,5,0">All witnesses long at least</CheckBox>
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding LowerAllWitnessLengthBound, Mode=TwoWay}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding AllWitnessLengthUpperBoundActive}" Margin="5,5,5,0">All witnesses long at most</CheckBox>
-            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperAllWitnessLengthBound}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
+            <CheckBox IsChecked="{Binding AllWitnessLengthUpperBoundActive, Mode=TwoWay}" Margin="5,5,5,0">All witnesses long at most</CheckBox>
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperAllWitnessLengthBound, Mode=TwoWay}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Where" Margin="5,5,5,0" />
-            <ComboBox ItemsSource="{Binding RegulatoryContexts, Mode=OneWay}" Margin="5,5,5,0" SelectedIndex="{Binding ConstrainedContextIndex}" />
+            <ComboBox ItemsSource="{Binding RegulatoryContexts, Mode=OneWay}" Margin="5,5,5,0" SelectedIndex="{Binding ConstrainedContextIndex, Mode=OneWayToSource}" />
             <TextBlock Text="is" Margin="5,5,5,0" />
-            <ComboBox ItemsSource="{Binding ContextConstraintTypes, Mode=OneTime}" Margin="5,5,5,0" SelectedItem="{Binding ContextConstraintType}" />
-            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding CurrentContextConstraint}" Maximum="{Binding ContextMaximum, Mode=OneWay}" Minimum="{Binding ContextMinimum, Mode=OneWay}" />
+            <ComboBox ItemsSource="{Binding ContextConstraintTypes, Mode=OneTime}" Margin="5,5,5,0" SelectedItem="{Binding ContextConstraintType, Mode=OneWayToSource}" />
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding CurrentContextConstraint, Mode=TwoWay}" Maximum="{Binding ContextMaximum, Mode=OneWay}" Minimum="{Binding ContextMinimum, Mode=OneWay}" />
             <Button Margin="5,5,5,0" Command="{Binding AddContextConstraintCommand, Mode=OneTime}">Add</Button>
         </StackPanel>
         <ListBox Margin="0,5,0,0" ItemsSource="{Binding ContextConstraints, Mode=OneWay}" Height="50">
