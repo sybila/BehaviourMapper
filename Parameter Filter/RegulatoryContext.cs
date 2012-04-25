@@ -8,13 +8,16 @@ namespace Parameter_Filter
 {
     public class RegulatoryContext
     {
+        public IEnumerable<string> Species { get; private set; }
         public string[] ContextMasks { get; private set; }
 
         public Dictionary<string, int> MinimalValues { get; private set; }
         public Dictionary<string, int> MaximalValues { get; private set; }
 
-        public RegulatoryContext(int numOfRegulations)
+        public RegulatoryContext(int numOfRegulations, int numOfSpecies)
         {
+            Species = Enumerable.Range(1, numOfSpecies).Select(i => string.Format("s{0}", i));
+
             ContextMasks = new string[numOfRegulations];
             MinimalValues = new Dictionary<string, int>();
             MaximalValues = new Dictionary<string, int>();
@@ -31,6 +34,8 @@ namespace Parameter_Filter
         {
             XDocument doc = XDocument.Load(modelFile);
             IEnumerable<XElement> species = doc.Element("MODEL").Element("STRUCTURE").Elements("SPECIE");
+
+            Species = species.Select(e => e.Attribute("name").Value).ToArray();
 
             var maskedSpecies = species
                 .SelectMany(e => e.Element("REGULATIONS").Elements("REGUL").Select(r => new { Specie = e, Regul = r.Attribute("mask").Value }))

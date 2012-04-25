@@ -5,18 +5,18 @@ using System.Text;
 
 namespace Parameter_Filter
 {
-    class State
+    public class State
     {
-        private IEnumerable<int> activityLevels;
+        public IEnumerable<int> ActivityLevels { get; private set; }
 
         public State(string activityLevels)
         {
-            this.activityLevels = activityLevels.Split(',').Select(l => int.Parse(l));
+            ActivityLevels = activityLevels.Split(',').Select(l => int.Parse(l));
         }
 
         public override string ToString()
         {
-            return string.Format("({0})", string.Join(",", activityLevels.ToArray()));
+            return string.Format("({0})", string.Join(",", ActivityLevels.ToArray()));
         }
 
         public override bool Equals(object obj)
@@ -25,13 +25,13 @@ namespace Parameter_Filter
                 return false;
 
             State other = (State)obj;
-            return this.activityLevels.Equals(other.activityLevels);
+            return this.ActivityLevels.Equals(other.ActivityLevels);
         }
 
         public override int GetHashCode()
         {
             int hash = 7;
-            hash += (71 * activityLevels.GetHashCode());
+            hash += (71 * ActivityLevels.GetHashCode());
             return hash;
         }
     }

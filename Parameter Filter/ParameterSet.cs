@@ -30,6 +30,8 @@ namespace Parameter_Filter
         }
 
         public RegulatoryContext RegulatoryContext { get; private set; }
+        public TimeSerie TimeSerie { get; private set; }
+
         public ParameterFilters Filters { get; private set; }
         public ParameterStatistic Statistic { get; private set; }
 
@@ -67,13 +69,15 @@ namespace Parameter_Filter
                     return 1;
 
                 if (x.WitnessCount > y.WitnessCount)
-                    return 0;
+                    return 1;
                 else if (x.WitnessCount < y.WitnessCount)
                     return (-1);
 
                 return x.ShortestWitness.CompareTo(y.ShortestWitness);
             }
         }
+
+        public bool HasRegulatoryContext { get { return (RegulatoryContext != null); } }
 
         #region Commands
 
@@ -104,7 +108,8 @@ namespace Parameter_Filter
                     RaisePropertyChanged("WitnessCount");
 
                     if (RegulatoryContext == null)
-                        RegulatoryContext = new RegulatoryContext(parameters.First().Values.Count());
+                        RegulatoryContext = new RegulatoryContext(parameters.First().Values.Count(),
+                            parameters.First().Witnesses.First().Sequence.First().ActivityLevels.Count());
 
                     foreach (Parameter p in parameters)
                         p.CreateMask(RegulatoryContext);
@@ -137,6 +142,9 @@ namespace Parameter_Filter
                 {
                     using (StreamWriter sw = new StreamWriter(diag.FileName))
                     {
+                        if (TimeSerie != null)
+                            sw.WriteLine(TimeSerie);
+
                         foreach (Witness w in Parameters.SelectMany(p => p.Witnesses))
                             sw.WriteLine(w.ToString());
                     }
@@ -175,6 +183,7 @@ namespace Parameter_Filter
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     RegulatoryContext = new RegulatoryContext(diag.FileName);
+                    RaisePropertyChanged("HasRegulatoryContext");
                     if (parameters != null)
                     {
                         foreach (Parameter p in parameters)
@@ -183,6 +192,34 @@ namespace Parameter_Filter
                         Filters.RefreshRegulatoryContexts();
                         Statistic.Refresh();
                     }
+                }
+            }
+        }
+
+        private RelayCommand _loadTimeSerieCommand;
+        public ICommand LoadTimeSerieCommand
+        {
+            get
+            {
+                _loadTimeSerieCommand = _loadTimeSerieCommand ?? new RelayCommand(() => LoadTimeSerie());
+                return _loadTimeSerieCommand;
+            }
+        }
+
+        private void LoadTimeSerie()
+        {
+            using (System.Windows.Forms.OpenFileDialog diag = new System.Windows.Forms.OpenFileDialog())
+            {
+                diag.Filter = "Parsybone Model File|*.dbm|Time Serie File|*.tms|Any File|*.*";
+                diag.Title = "Select time serie to load.";
+                diag.CheckFileExists = true;
+
+                if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    if (diag.FileName.Split('.').Last() == "dbm")
+                        TimeSerie = new TimeSerie(diag.FileName, RegulatoryContext);
+                    else
+                        TimeSerie = new TimeSerie(diag.FileName, RegulatoryContext.Species.Count());
                 }
             }
         }

@@ -70,6 +70,7 @@
     <Compile Include="RegulatoryContext.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="State.cs" />
+    <Compile Include="TimeSerie.cs" />
     <Compile Include="Witness.cs" />
     <Page Include="FilterControls.xaml">
       <SubType>Designer</SubType>

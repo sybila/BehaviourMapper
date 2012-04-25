@@ -23,8 +23,8 @@
             </MenuItem>
             <MenuItem Header="Model">
                 <MenuItem Header="Load Model" Command="{Binding LoadModelCommand, Mode=OneTime}" />
-                <MenuItem Header="Load Time Serie" Command="{Binding LoadTimeSerieCommand, Mode=OneTime}" IsEnabled="False" />
-                <MenuItem Header="Create Time Serie" Command="{Binding CreateTimeSerieCommand, Mode=OneTime}" IsEnabled="False" />
+                <MenuItem Header="Load Time Serie" Command="{Binding LoadTimeSerieCommand, Mode=OneTime}" IsEnabled="{Binding HasRegulatoryContext, Mode=OneWay}" />
+                <MenuItem Header="Create Time Serie" Command="{Binding CreateTimeSerieCommand, Mode=OneTime}" IsEnabled="{Binding HasRegulatoryContext, Mode=OneWay}" />
             </MenuItem>
         </Menu>
 
