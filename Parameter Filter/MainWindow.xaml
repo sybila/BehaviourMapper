@@ -18,7 +18,10 @@
         <Menu Grid.ColumnSpan="3">
             <MenuItem Header="File" >
                 <MenuItem Header="Import" Command="{Binding ImportCommand, Mode=OneTime}" />
-                <MenuItem Header="Export" Command="{Binding ExportCommand, Mode=OneTime}" />
+                <MenuItem Header="Export">
+                    <MenuItem Header="Witness Plotter File" Command="{Binding ExportWitnessesCommand, Mode=OneTime}" />
+                    <MenuItem Header="Witness Map" Command="{Binding ExportGraphCommand, Mode=OneTime}" IsEnabled="{Binding HasTimeSerie}" />
+                </MenuItem>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand, Mode=OneTime}" />
             </MenuItem>
             <MenuItem Header="Model">
@@ -30,7 +33,7 @@
 
         <StackPanel Grid.Row="1" Width="150">
             <Button Margin="15,15,15,10"  Command="{Binding ImportCommand, Mode=OneTime}" Width="100">Import</Button>
-            <Button Margin="15,15,15,10"  Command="{Binding ExportCommand, Mode=OneTime}" Width="100">Export</Button>
+            <Button Margin="15,15,15,10"  Command="{Binding ExportWitnessesCommand, Mode=OneTime}" Width="100">Export</Button>
             <TextBlock Text="Selected" Margin="15,15,15,0" HorizontalAlignment="Center" />
             <TextBlock Text="{Binding ParameterCount}" Margin="15,5,15,0" HorizontalAlignment="Center" FontWeight="Bold" />
             <TextBlock Text="parameters with" Margin="15,5,15,0" HorizontalAlignment="Center" />

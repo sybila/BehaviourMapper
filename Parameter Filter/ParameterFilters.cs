@@ -19,7 +19,7 @@ namespace Parameter_Filter
         public int MinimumWitnessCount
         {
             get { return _minimumWitnessCount; }
-            private set
+            set
             {
                 if (value == _minimumWitnessCount)
                     return;
@@ -39,7 +39,7 @@ namespace Parameter_Filter
         public int MaximumWitnessCount
         {
             get { return _maximumWitnessCount; }
-            private set
+            set
             {
                 if (value == _maximumWitnessCount)
                     return;
@@ -59,7 +59,7 @@ namespace Parameter_Filter
         public bool WitnessCountLowerBoundActive
         {
             get { return _witnessCountLowerBoundActive; }
-            private set
+            set
             {
                 if (value == _witnessCountLowerBoundActive)
                     return;
@@ -75,7 +75,7 @@ namespace Parameter_Filter
         public bool WitnessCountUpperBoundActive
         {
             get { return _witnessCountUpperBoundActive; }
-            private set
+            set
             {
                 if (value == _witnessCountUpperBoundActive)
                     return;
@@ -125,7 +125,7 @@ namespace Parameter_Filter
         public int ShortestWitness
         {
             get { return _shortestWitness; }
-            private set
+            set
             {
                 if (value == _shortestWitness)
                     return;
@@ -150,7 +150,7 @@ namespace Parameter_Filter
         public int LongestWitness
         {
             get { return _longestWitness; }
-            private set
+            set
             {
                 if (value == _longestWitness)
                     return;
@@ -175,7 +175,7 @@ namespace Parameter_Filter
         public bool WitnessLengthLowerBoundActive
         {
             get { return _witnessLengthLowerBoundActive; }
-            private set
+            set
             {
                 if (value == _witnessLengthLowerBoundActive)
                     return;
@@ -191,7 +191,7 @@ namespace Parameter_Filter
         public bool WitnessLengthUpperBoundActive
         {
             get { return _witnessLengthUpperBoundActive; }
-            private set
+            set
             {
                 if (value == _witnessLengthUpperBoundActive)
                     return;
@@ -241,7 +241,7 @@ namespace Parameter_Filter
         public bool AllWitnessLengthLowerBoundActive
         {
             get { return _allWitnessLengthLowerBoundActive; }
-            private set
+            set
             {
                 if (value == _allWitnessLengthLowerBoundActive)
                     return;
@@ -257,7 +257,7 @@ namespace Parameter_Filter
         public bool AllWitnessLengthUpperBoundActive
         {
             get { return _allWitnessLengthUpperBoundActive; }
-            private set
+            set
             {
                 if (value == _allWitnessLengthUpperBoundActive)
                     return;

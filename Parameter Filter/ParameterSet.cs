@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -78,6 +79,7 @@ namespace Parameter_Filter
         }
 
         public bool HasRegulatoryContext { get { return (RegulatoryContext != null); } }
+        public bool HasTimeSerie { get { return (TimeSerie != null); } }
 
         #region Commands
 
@@ -121,17 +123,17 @@ namespace Parameter_Filter
             }
         }
 
-        private RelayCommand _exportCommand;
-        public ICommand ExportCommand
+        private RelayCommand _exportWitnessesCommand;
+        public ICommand ExportWitnessesCommand
         {
             get
             {
-                _exportCommand = _exportCommand ?? new RelayCommand(() => ExportData());
-                return _exportCommand;
+                _exportWitnessesCommand = _exportWitnessesCommand ?? new RelayCommand(() => ExportWitnesses());
+                return _exportWitnessesCommand;
             }
         }
 
-        private void ExportData()
+        private void ExportWitnesses()
         {
             using (System.Windows.Forms.SaveFileDialog diag = new System.Windows.Forms.SaveFileDialog())
             {
@@ -139,15 +141,59 @@ namespace Parameter_Filter
                 diag.Title = "Save as";
 
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    using (StreamWriter sw = new StreamWriter(diag.FileName))
-                    {
-                        if (TimeSerie != null)
-                            sw.WriteLine(TimeSerie);
+                    ExportWitnesses(diag.FileName);
+            }
+        }
 
-                        foreach (Witness w in Parameters.SelectMany(p => p.Witnesses))
-                            sw.WriteLine(w.ToString());
-                    }
+        private void ExportWitnesses(string fileName)
+        {
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                if (TimeSerie != null)
+                    sw.WriteLine(TimeSerie);
+
+                foreach (Witness w in Parameters.SelectMany(p => p.Witnesses))
+                    sw.WriteLine(w.ToString());
+            }
+        }
+
+        private RelayCommand _exportGraphCommand;
+        public ICommand ExportGraphCommand
+        {
+            get
+            {
+                _exportGraphCommand = _exportGraphCommand ?? new RelayCommand(() => ExportGraph());
+                return _exportGraphCommand;
+            }
+        }
+
+        private void ExportGraph()
+        {
+            using (System.Windows.Forms.SaveFileDialog diag = new System.Windows.Forms.SaveFileDialog())
+            {
+                //diag.Filter = "Cytoscape Graph|*.XGMML";
+                diag.AddExtension = false;
+                diag.Title = "Save graph as";
+
+                if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    Random rnd = new Random();
+                    string tmp = string.Format("{0}{1}.tmp", diag.FileName, rnd.Next());
+
+                    ExportWitnesses(tmp);
+
+                    ProcessStartInfo witnessPlotterStarter = new ProcessStartInfo("C:\\Program Files\\Java\\jdk1.7.0_01\\bin\\java.exe",
+                        string.Format("-jar WitnessPlotter.jar {0} {1} --all", tmp, diag.FileName));
+                    witnessPlotterStarter.WorkingDirectory = Environment.CurrentDirectory;
+                    witnessPlotterStarter.CreateNoWindow = true;
+                    witnessPlotterStarter.UseShellExecute = false;
+                    witnessPlotterStarter.WindowStyle = ProcessWindowStyle.Hidden;
+
+                    Process witnessPlotter = Process.Start(witnessPlotterStarter);
+                    witnessPlotter.WaitForExit();
+                    witnessPlotter.Close();
+
+                    File.Delete(tmp);
                 }
             }
         }
@@ -220,6 +266,8 @@ namespace Parameter_Filter
                         TimeSerie = new TimeSerie(diag.FileName, RegulatoryContext);
                     else
                         TimeSerie = new TimeSerie(diag.FileName, RegulatoryContext.Species.Count());
+
+                    RaisePropertyChanged("HasTimeSerie");
                 }
             }
         }
