@@ -12,6 +12,13 @@
                 <WrapPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
+        <ItemsControl.Template>
+            <ControlTemplate>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="{TemplateBinding Padding}">
+                    <ItemsPresenter />
+                </ScrollViewer>
+            </ControlTemplate>
+        </ItemsControl.Template>
         <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <local:ParameterValueStatistic DataContext="{Binding}" />

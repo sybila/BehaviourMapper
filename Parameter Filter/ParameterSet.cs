@@ -13,7 +13,8 @@ namespace Parameter_Filter
     public class ParameterSet : ObservableObject
     {
         public int ParameterCount { get { return ((Parameters == null) ? 0 : Parameters.Count()); } }
-        public int WitnessCount { get { return ((Parameters == null) ? 0 : Parameters.SelectMany(p => p.Witnesses).Distinct().Count()); } }
+        public int WitnessCount { get { return ((Parameters == null) ? 0 : Parameters.SelectMany(p => p.Witnesses).Count()); } }
+        public int DistinctWitnessCount { get { return ((Parameters == null) ? 0 : Parameters.SelectMany(p => p.Witnesses).Distinct().Count()); } }
 
         private IEnumerable<Parameter> parameters;
         private IEnumerable<Parameter> _filteredParameters;
@@ -30,6 +31,8 @@ namespace Parameter_Filter
             }
         }
 
+        private WitnessSet witnesses;
+
         public RegulatoryContext RegulatoryContext { get; private set; }
         public TimeSerie TimeSerie { get; private set; }
 
@@ -38,6 +41,8 @@ namespace Parameter_Filter
 
         public ParameterSet()
         {
+            witnesses = new WitnessSet();
+
             Filters = new ParameterFilters(this);
             Statistic = new ParameterStatistic(this);
         }
@@ -51,6 +56,7 @@ namespace Parameter_Filter
 
             RaisePropertyChanged("ParameterCount");
             RaisePropertyChanged("WitnessCount");
+            RaisePropertyChanged("DistinctWitnessCount");
             Statistic.Refresh();
         }
 
@@ -103,11 +109,8 @@ namespace Parameter_Filter
 
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    parameters = ParameterParser.Parse(diag.FileName).ToArray();
+                    parameters = ParameterParser.Parse(diag.FileName, witnesses).ToArray();
                     Parameters = parameters;
-
-                    RaisePropertyChanged("ParameterCount");
-                    RaisePropertyChanged("WitnessCount");
 
                     if (RegulatoryContext == null)
                         RegulatoryContext = new RegulatoryContext(parameters.First().Values.Count(),
@@ -118,7 +121,8 @@ namespace Parameter_Filter
 
                     Filters.SetBounds(parameters);
                     Filters.RefreshRegulatoryContexts();
-                    Statistic.Refresh();
+
+                    Refresh(false);
                 }
             }
         }

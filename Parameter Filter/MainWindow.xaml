@@ -38,7 +38,8 @@
             <TextBlock Text="{Binding ParameterCount}" Margin="15,5,15,0" HorizontalAlignment="Center" FontWeight="Bold" />
             <TextBlock Text="parameters with" Margin="15,5,15,0" HorizontalAlignment="Center" />
             <TextBlock Text="{Binding WitnessCount}" Margin="15,5,15,0" HorizontalAlignment="Center" FontWeight="Bold" />
-            <TextBlock Text="witnesses." Margin="15,5,15,15" HorizontalAlignment="Center" />
+            <TextBlock Text="witnesses." Margin="15,5,15,0" HorizontalAlignment="Center" />
+            <TextBlock Margin="15,5,15,15" HorizontalAlignment="Center" ><Run Text="(" /><Run Text="{Binding DistinctWitnessCount, Mode=OneWay}" FontWeight="Bold" /><Run Text=" Distinct)" /></TextBlock>
         </StackPanel>
         
         <local:FilterControls Grid.Column="1" Grid.Row="1" DataContext="{Binding Filters, Mode=OneWay}" />

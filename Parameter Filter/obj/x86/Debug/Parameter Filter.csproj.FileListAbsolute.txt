@@ -25,3 +25,4 @@ C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Debug
 C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Debug\Parameter Filter.csprojResolveAssemblyReference.cache
 C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Debug\WitnessPlotter.jar
 C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Debug\Parameter Filter_Content.g.cs
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Debug\Parameter Filter.exe.config

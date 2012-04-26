@@ -1,0 +1,15 @@
+Witness Plotter project
+Copyright (c) 2012 - George Kolcak
+Systems Biology Laboratory of Masaryk University, Brno
+open-source 2012, GNU GPL v3
+
+Execution:
+	Witness Plotter is a java command line tool which parses the provided input data and saves a graph to the desired location.
+	(Note that file extension for the output file is added automatically.)
+Arguments:
+	java -jar WitnessPlotter.jar [<modifier>] <input_file> <output_file>
+	input_file - Windows Plotter input file formatted as Time Series on the first line and a single witness on each other line.
+	output_file - The file in which the xgmml graph will be stored.
+	modifier:
+		-h	--help Displays simple help.
+		-a	--all Outputs all the witnesses instead of only shortest ones.

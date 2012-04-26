@@ -25,7 +25,7 @@ namespace Parameter_Filter
                 return false;
 
             State other = (State)obj;
-            return this.ActivityLevels.Equals(other.ActivityLevels);
+            return this.ActivityLevels.SequenceEqual(other.ActivityLevels);
         }
 
         public override int GetHashCode()

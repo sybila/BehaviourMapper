@@ -8,7 +8,7 @@ namespace Parameter_Filter
 {
     public static class ParameterParser
     {
-        public static IEnumerable<Parameter> Parse(string filePath)
+        public static IEnumerable<Parameter> Parse(string filePath, WitnessSet witnessSet)
         {
             using (StreamReader sr = new StreamReader(filePath))
             {
@@ -25,7 +25,7 @@ namespace Parameter_Filter
                         param = new Parameter(line.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries)[0]);
                     }
                     else
-                        param.AddWitness(new Witness(line.Split(new string[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries)));
+                        param.AddWitness(witnessSet.GetWitness(line));
                 }
 
                 yield return param;
