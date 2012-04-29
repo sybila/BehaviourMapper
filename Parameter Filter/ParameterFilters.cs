@@ -303,6 +303,112 @@ namespace Parameter_Filter
             }
         }
 
+        private bool _robustnessLowerBoundActive;
+        public bool RobustnessLowerBoundActive
+        {
+            get { return _robustnessLowerBoundActive; }
+            set
+            {
+                if (value == _robustnessLowerBoundActive)
+                    return;
+
+                _robustnessLowerBoundActive = value;
+                RaisePropertyChanged("RobustnessLowerBoundActive");
+
+                set.Refresh(_robustnessLowerBoundActive);
+            }
+        }
+
+        private bool _robustnessUpperBoundActive;
+        public bool RobustnessUpperBoundActive
+        {
+            get { return _robustnessUpperBoundActive; }
+            set
+            {
+                if (value == _robustnessUpperBoundActive)
+                    return;
+
+                _robustnessUpperBoundActive = value;
+                RaisePropertyChanged("RobustnessUpperBoundActive");
+
+                set.Refresh(_robustnessUpperBoundActive);
+            }
+        }
+
+        private double _lowestRobustness;
+        public double LowestRobustness
+        {
+            get { return _lowestRobustness; }
+            set
+            {
+                if (value == _lowestRobustness)
+                    return;
+
+                _lowestRobustness = value;
+
+                if (LowerRobustnessBound < _lowestRobustness)
+                    LowerRobustnessBound = _lowestRobustness;
+                if (UpperRobustnessBound < _lowestRobustness)
+                    UpperRobustnessBound = _lowestRobustness;
+
+                RaisePropertyChanged("LowestRobustness");
+            }
+        }
+
+        private double _highestRobustness;
+        public double HighestRobustness
+        {
+            get { return _highestRobustness; }
+            set
+            {
+                if (value == _highestRobustness)
+                    return;
+
+                _highestRobustness = value;
+
+                if (LowerRobustnessBound > _highestRobustness)
+                    LowerRobustnessBound = _highestRobustness;
+                if (UpperRobustnessBound > _highestRobustness)
+                    UpperRobustnessBound = _highestRobustness;
+
+                RaisePropertyChanged("HighestRobustness");
+            }
+        }
+
+        private double _lowerRobustnessBound;
+        public double LowerRobustnessBound
+        {
+            get { return _lowerRobustnessBound; }
+            set
+            {
+                if (value == _lowerRobustnessBound)
+                    return;
+
+                _lowerRobustnessBound = value;
+                RaisePropertyChanged("LowerRobustnessBound");
+
+                if (RobustnessLowerBoundActive)
+                    filterChange.OnNext(Unit.Default);
+            }
+        }
+
+        private double _upperRobustnessBound;
+        public double UpperRobustnessBound
+        {
+            get { return _upperRobustnessBound; }
+            set
+            {
+                if (value == _upperRobustnessBound)
+                    return;
+
+                _upperRobustnessBound = value;
+                RaisePropertyChanged("UpperRobustnessBound");
+
+                if (RobustnessUpperBoundActive)
+                    filterChange.OnNext(Unit.Default);
+            }
+        }
+
         public IEnumerable<string> ContextConstraintTypes { get { return ContextConstraint.contextConstraintTypeConversion.Keys; } }
 
         public IEnumerable<string> RegulatoryContexts { get { return ((set.RegulatoryContext == null) ? new string[] { } : set.RegulatoryContext.ContextMasks); } }
@@ -413,6 +519,9 @@ namespace Parameter_Filter
 
             ShortestWitness = parameters.SelectMany(p => p.Witnesses).Select(w => w.Length).Min();
             LongestWitness = parameters.SelectMany(p => p.Witnesses).Select(w => w.Length).Max();
+
+            LowestRobustness = parameters.Select(p => p.Robustness).Min();
+            HighestRobustness = parameters.Select(p => p.Robustness).Max();
         }
 
         public void RefreshRegulatoryContexts()
@@ -436,6 +545,11 @@ namespace Parameter_Filter
                 yield return (p => p.Witnesses.All(w => w.Length >= LowerAllWitnessLengthBound));
             if (AllWitnessLengthUpperBoundActive)
                 yield return (p => p.Witnesses.All(w => w.Length <= UpperAllWitnessLengthBound));
+
+            if (RobustnessLowerBoundActive)
+                yield return (p => p.Robustness >= LowerRobustnessBound);
+            if (RobustnessUpperBoundActive)
+                yield return (p => p.Robustness <= UpperRobustnessBound);
 
             foreach (var filter in ContextConstraints.Select(c => c.GetFilter()))
                 yield return filter;

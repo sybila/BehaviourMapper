@@ -35,6 +35,16 @@
             <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperAllWitnessLengthBound, Mode=TwoWay}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding RobustnessLowerBoundActive, Mode=TwoWay}" Margin="5,5,5,0">Robustness at least</CheckBox>
+            <wpfx:DoubleUpDown Margin="5,5,5,0" Value="{Binding LowerRobustnessBound, Mode=TwoWay}" Maximum="{Binding HighestRobustness, Mode=OneWay}" Minimum="{Binding LowestRobustness, Mode=OneWay}" Increment="0.01" FormatString="0.00" />
+            <TextBlock Text="%" Margin="5,5,5,0" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding RobustnessUpperBoundActive, Mode=TwoWay}" Margin="5,5,5,0">Robustness at most</CheckBox>
+            <wpfx:DoubleUpDown Margin="5,5,5,0" Value="{Binding UpperRobustnessBound, Mode=TwoWay}" Maximum="{Binding HighestRobustness, Mode=OneWay}" Minimum="{Binding LowestRobustness, Mode=OneWay}" Increment="0.01" FormatString="0.00" />
+            <TextBlock Text="%" Margin="5,5,5,0" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
             <TextBlock Text="Where" Margin="5,5,5,0" />
             <ComboBox ItemsSource="{Binding RegulatoryContexts, Mode=OneWay}" Margin="5,5,5,0" SelectedIndex="{Binding ConstrainedContextIndex, Mode=OneWayToSource}" />
             <TextBlock Text="is" Margin="5,5,5,0" />
@@ -42,7 +52,7 @@
             <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding CurrentContextConstraint, Mode=TwoWay}" Maximum="{Binding ContextMaximum, Mode=OneWay}" Minimum="{Binding ContextMinimum, Mode=OneWay}" />
             <Button Margin="5,5,5,0" Command="{Binding AddContextConstraintCommand, Mode=OneTime}">Add</Button>
         </StackPanel>
-        <ListBox Margin="0,5,0,0" ItemsSource="{Binding ContextConstraints, Mode=OneWay}" Height="150">
+        <ListBox Margin="0,5,0,0" ItemsSource="{Binding ContextConstraints, Mode=OneWay}" Height="100">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
