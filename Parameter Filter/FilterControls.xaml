@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="250">
+             d:DesignHeight="350" d:DesignWidth="250">
     <StackPanel>
         <TextBlock Text="Parameter Filters" Margin="15,5,15,0" HorizontalAlignment="Center" />
         <StackPanel Orientation="Horizontal">
@@ -42,7 +42,7 @@
             <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding CurrentContextConstraint, Mode=TwoWay}" Maximum="{Binding ContextMaximum, Mode=OneWay}" Minimum="{Binding ContextMinimum, Mode=OneWay}" />
             <Button Margin="5,5,5,0" Command="{Binding AddContextConstraintCommand, Mode=OneTime}">Add</Button>
         </StackPanel>
-        <ListBox Margin="0,5,0,0" ItemsSource="{Binding ContextConstraints, Mode=OneWay}" Height="50">
+        <ListBox Margin="0,5,0,0" ItemsSource="{Binding ContextConstraints, Mode=OneWay}" Height="150">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

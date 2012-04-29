@@ -24,8 +24,10 @@ namespace Parameter_Filter
 
                         param = new Parameter(line.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries)[0]);
                     }
-                    else
+                    else if (line.First() == '(')
                         param.AddWitness(witnessSet.GetWitness(line));
+                    else
+                        param.Robustness = Double.Parse(line);
                 }
 
                 yield return param;

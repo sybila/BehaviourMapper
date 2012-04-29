@@ -186,8 +186,8 @@ namespace Parameter_Filter
 
                     ExportWitnesses(tmp);
 
-                    ProcessStartInfo witnessPlotterStarter = new ProcessStartInfo("C:\\Program Files\\Java\\jdk1.7.0_01\\bin\\java.exe",
-                        string.Format("-jar WitnessPlotter.jar {0} {1} --all", tmp, diag.FileName));
+                    ProcessStartInfo witnessPlotterStarter = new ProcessStartInfo("\"C:\\Program Files\\Java\\jdk1.7.0_01\\bin\\java.exe\"",
+                        string.Format("-jar WitnessPlotter.jar \"{0}\" \"{1}\" --all", tmp, diag.FileName));
                     witnessPlotterStarter.WorkingDirectory = Environment.CurrentDirectory;
                     witnessPlotterStarter.CreateNoWindow = true;
                     witnessPlotterStarter.UseShellExecute = false;

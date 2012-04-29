@@ -41,6 +41,20 @@ namespace Parameter_Filter
             }
         }
 
+        private double _robustness;
+        public double Robustness
+        {
+            get { return (_robustness * 100); }
+            set
+            {
+                if (value == _robustness)
+                    return;
+
+                _robustness = value;
+                RaisePropertyChanged("Robustness");
+            }
+        }
+
         public Parameter(string values)
         {
             ShortestWitness = (-1);
@@ -48,6 +62,8 @@ namespace Parameter_Filter
 
             this.Values = values.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries).Select(v => int.Parse(v));
             Mask = "Unknown";
+
+            Robustness = 0.0;
         }
 
         public void AddWitness(Witness witness)
