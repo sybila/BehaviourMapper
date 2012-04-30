@@ -73,6 +73,10 @@
     <Compile Include="State.cs" />
     <Compile Include="TimeSerie.cs" />
     <Compile Include="Witness.cs" />
+    <Compile Include="WitnessFilter.cs" />
+    <Compile Include="WitnessFilterControls.xaml.cs">
+      <DependentUpon>WitnessFilterControls.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WitnessSet.cs" />
     <Page Include="FilterControls.xaml">
       <SubType>Designer</SubType>
@@ -102,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ParameterValueStatistic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WitnessFilterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

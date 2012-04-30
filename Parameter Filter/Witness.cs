@@ -7,13 +7,23 @@ namespace Parameter_Filter
 {
     public class Witness
     {
+        private ISet<Parameter> parameters;
+        public IEnumerable<Parameter> Parameters { get { return parameters; } }
+
         public IEnumerable<State> Sequence { get; private set; }
 
         public int Length { get { return Sequence.Count(); } }
 
         public Witness(string[] states)
         {
+            parameters = new HashSet<Parameter>();
+
             Sequence = states.Select(s => new State(s));
+        }
+
+        public void AddParameter(Parameter parameter)
+        {
+            parameters.Add(parameter);
         }
 
         public override string ToString()

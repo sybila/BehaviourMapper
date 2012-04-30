@@ -7,7 +7,28 @@ namespace Parameter_Filter
 {
     public class Parameter : ObservableObject
     {
-        public ISet<Witness> Witnesses { get; private set; }
+        private ISet<Witness> witnesses;
+        private IEnumerable<Witness> _witnesses;
+        public IEnumerable<Witness> Witnesses
+        {
+            get { return _witnesses; }
+            set
+            {
+                if (value == _witnesses)
+                    return;
+
+                _witnesses = value;
+                RaisePropertyChanged("WitnessCount");
+            }
+        }
+
+        public void FilterWitnesses(IEnumerable<Predicate<Witness>> filters, bool tighten)
+        {
+            if (tighten)
+                Witnesses = Witnesses.Where(w => filters.All(f => f(w)));
+            else
+                Witnesses = witnesses.Where(w => filters.All(f => f(w)));
+        }
 
         public IEnumerable<int> Values { get; private set; }
 
@@ -25,7 +46,7 @@ namespace Parameter_Filter
             }
         }
 
-        public int WitnessCount { get { return Witnesses.Count; } }
+        public int WitnessCount { get { return Witnesses.Count(); } }
 
         private int _shortestWitness;
         public int ShortestWitness
@@ -58,7 +79,7 @@ namespace Parameter_Filter
         public Parameter(string values)
         {
             ShortestWitness = (-1);
-            Witnesses = new HashSet<Witness>();
+            witnesses = new HashSet<Witness>();
 
             this.Values = values.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries).Select(v => int.Parse(v));
             Mask = "Unknown";
@@ -68,8 +89,8 @@ namespace Parameter_Filter
 
         public void AddWitness(Witness witness)
         {
-            Witnesses.Add(witness);
-            RaisePropertyChanged("WitnessCount");
+            witnesses.Add(witness);
+            Witnesses = witnesses;
 
             if ((ShortestWitness < 0) || (witness.Length < ShortestWitness))
                 ShortestWitness = witness.Length;

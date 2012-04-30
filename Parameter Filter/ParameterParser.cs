@@ -25,7 +25,7 @@ namespace Parameter_Filter
                         param = new Parameter(line.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries)[0]);
                     }
                     else if (line.First() == '(')
-                        param.AddWitness(witnessSet.GetWitness(line));
+                        param.AddWitness(witnessSet.GetWitness(line, param));
                     else
                         param.Robustness = Double.Parse(line);
                 }

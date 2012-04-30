@@ -37,6 +37,8 @@ namespace Parameter_Filter
         public TimeSerie TimeSerie { get; private set; }
 
         public ParameterFilters Filters { get; private set; }
+        public WitnessFilter WitnessFilters { get; private set; }
+
         public ParameterStatistic Statistic { get; private set; }
 
         public ParameterSet()
@@ -44,6 +46,8 @@ namespace Parameter_Filter
             witnesses = new WitnessSet();
 
             Filters = new ParameterFilters(this);
+            WitnessFilters = new WitnessFilter(this);
+
             Statistic = new ParameterStatistic(this);
         }
 
@@ -58,6 +62,17 @@ namespace Parameter_Filter
             RaisePropertyChanged("WitnessCount");
             RaisePropertyChanged("DistinctWitnessCount");
             Statistic.Refresh();
+        }
+
+        public void RefreshWitnesses(bool tighten)
+        {
+            foreach(Parameter p in parameters)
+                p.FilterWitnesses(WitnessFilters.GetActiveFilters().ToArray(), tighten);
+
+            Filters.SetBounds(parameters);
+
+            RaisePropertyChanged("WitnessCount");
+            RaisePropertyChanged("DistinctWitnessCount");
         }
 
         private class ParameterByWitnessesComparer : IComparer<Parameter>
@@ -120,6 +135,8 @@ namespace Parameter_Filter
                         p.CreateMask(RegulatoryContext);
 
                     Filters.SetBounds(parameters);
+                    WitnessFilters.SetBounds(witnesses);
+
                     Filters.RefreshRegulatoryContexts();
 
                     Refresh(false);

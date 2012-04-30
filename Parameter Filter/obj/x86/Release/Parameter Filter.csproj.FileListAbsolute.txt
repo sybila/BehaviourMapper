@@ -26,3 +26,5 @@ C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\R
 C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Release\WitnessPlotter.jar
 C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\Parameter Filter_Content.g.cs
 C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\bin\Release\Parameter Filter.exe.config
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\WitnessFilterControls.baml
+C:\Users\Jooji\Documents\C# Projects\Parameter Filter\Parameter Filter\obj\x86\Release\WitnessFilterControls.g.cs
