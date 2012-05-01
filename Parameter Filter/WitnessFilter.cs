@@ -118,6 +118,111 @@ namespace Parameter_Filter
                     filterChange.OnNext(Unit.Default);
             }
         }
+
+        private bool _lengthLowerBoundActive;
+        public bool LengthLowerBoundActive
+        {
+            get { return _lengthLowerBoundActive; }
+            set
+            {
+                if (value == _lengthLowerBoundActive)
+                    return;
+
+                _lengthLowerBoundActive = value;
+                RaisePropertyChanged("LengthLowerBoundActive");
+
+                set.RefreshWitnesses(_lengthLowerBoundActive);
+            }
+        }
+
+        private bool _lengthUpperBoundActive;
+        public bool LengthUpperBoundActive
+        {
+            get { return _lengthUpperBoundActive; }
+            set
+            {
+                if (value == _lengthUpperBoundActive)
+                    return;
+
+                _lengthUpperBoundActive = value;
+                RaisePropertyChanged("LengthUpperBoundActive");
+
+                set.RefreshWitnesses(_lengthUpperBoundActive);
+            }
+        }
+
+        private int _shortestWitness;
+        public int ShortestWitness
+        {
+            get { return _shortestWitness; }
+            set
+            {
+                if (value == _shortestWitness)
+                    return;
+
+                _shortestWitness = value;
+
+                if (LowerLengthBound < _shortestWitness)
+                    LowerLengthBound = _shortestWitness;
+                if (UpperLengthBound < _shortestWitness)
+                    UpperLengthBound = _shortestWitness;
+
+                RaisePropertyChanged("ShortestWitness");
+            }
+        }
+
+        private int _longestWitness;
+        public int LongestWitness
+        {
+            get { return _longestWitness; }
+            set
+            {
+                if (value == _longestWitness)
+                    return;
+
+                if (LowerLengthBound > _shortestWitness)
+                    LowerLengthBound = _shortestWitness;
+                if (UpperLengthBound > _shortestWitness)
+                    UpperLengthBound = _shortestWitness;
+
+                _longestWitness = value;
+                RaisePropertyChanged("LongestWitness");
+            }
+        }
+
+        private int _lowerLengthBound;
+        public int LowerLengthBound
+        {
+            get { return _lowerLengthBound; }
+            set
+            {
+                if (value == _lowerLengthBound)
+                    return;
+
+                _lowerLengthBound = value;
+                RaisePropertyChanged("LowerLengthBound");
+
+                if (LengthLowerBoundActive)
+                    filterChange.OnNext(Unit.Default);
+            }
+        }
+
+        private int _upperLengthBound;
+        public int UpperLengthBound
+        {
+            get { return _upperLengthBound; }
+            set
+            {
+                if (value == _upperLengthBound)
+                    return;
+
+                _upperLengthBound = value;
+                RaisePropertyChanged("UpperLengthBound");
+
+                if (LengthUpperBoundActive)
+                    filterChange.OnNext(Unit.Default);
+            }
+        }
         
         public WitnessFilter(ParameterSet set)
         {
@@ -133,14 +238,22 @@ namespace Parameter_Filter
         {
             MinimumParameterCount = witnessSet.Witnesses.Select(w => w.Parameters.Count()).Min();
             MaximumParameterCount = witnessSet.Witnesses.Select(w => w.Parameters.Count()).Max();
+
+            ShortestWitness = witnessSet.Witnesses.Select(w => w.Length).Min();
+            LongestWitness = witnessSet.Witnesses.Select(w => w.Length).Max();
         }
 
         public IEnumerable<Predicate<Witness>> GetActiveFilters()
         {
             if (ParameterCountLowerBoundActive)
-                yield return (w => w.Parameters.Count() >= LowerParameterCountBound);
+                yield return (w => (w.Parameters.Count() >= LowerParameterCountBound));
             if (ParameterCountUpperBoundActive)
-                yield return (w => w.Parameters.Count() <= UpperParameterCountBound);
+                yield return (w => (w.Parameters.Count() <= UpperParameterCountBound));
+
+            if (LengthLowerBoundActive)
+                yield return (w => (w.Length >= LowerLengthBound));
+            if (LengthUpperBoundActive)
+                yield return (w => (w.Length <= UpperLengthBound));
         }
     }
 }

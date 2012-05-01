@@ -18,5 +18,13 @@
             <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperParameterCountBound}" Maximum="{Binding MaximumParameterCount, Mode=OneWay}" Minimum="{Binding MinimumParameterCount, Mode=OneWay}" />
             <TextBlock Text="parameters" Margin="5,5,5,0" />
         </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding LengthLowerBoundActive}" Margin="5,5,5,0">Long at least</CheckBox>
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding LowerLengthBound}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding LengthUpperBoundActive}" Margin="5,5,5,0">Long at most</CheckBox>
+            <wpfx:IntegerUpDown Margin="5,5,5,0" Value="{Binding UpperLengthBound}" Maximum="{Binding LongestWitness, Mode=OneWay}" Minimum="{Binding ShortestWitness, Mode=OneWay}" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

@@ -517,8 +517,18 @@ namespace Parameter_Filter
             MinimumWitnessCount = parameters.Select(p => p.WitnessCount).Min();
             MaximumWitnessCount = parameters.Select(p => p.WitnessCount).Max();
 
-            ShortestWitness = parameters.SelectMany(p => p.Witnesses).Select(w => w.Length).Min();
-            LongestWitness = parameters.SelectMany(p => p.Witnesses).Select(w => w.Length).Max();
+            IEnumerable<Witness> witnesses = parameters.SelectMany(p => p.Witnesses);
+
+            if (witnesses.Any(x => (x != null)))
+            {
+                ShortestWitness = witnesses.Select(w => w.Length).Min();
+                LongestWitness = witnesses.Select(w => w.Length).Max();
+            }
+            else
+            {
+                ShortestWitness = 0;
+                LongestWitness = 0;
+            }
 
             LowestRobustness = parameters.Select(p => p.Robustness).Min();
             HighestRobustness = parameters.Select(p => p.Robustness).Max();

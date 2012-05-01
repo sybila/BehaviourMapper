@@ -47,7 +47,7 @@
         
         <local:WitnessFilterControls Grid.Column="2" Grid.Row="1" DataContext="{Binding WitnessFilters, Mode=OneWay}" />
 
-        <local:ParameterStatistics Grid.ColumnSpan="3" Grid.Row="2" Width="350" Margin="10,0,10,10"  DataContext="{Binding Statistic, Mode=OneTime}"/>
+        <local:ParameterStatistics Grid.ColumnSpan="3" Grid.Row="2" Margin="10,0,10,10" Width="600" DataContext="{Binding Statistic, Mode=OneTime}" />
         
         <ListBox Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Parameters, Mode=OneWay}" >
             <ItemsControl.ItemTemplate>
