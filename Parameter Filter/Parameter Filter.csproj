@@ -64,12 +64,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ContextConstraint.cs" />
+    <Compile Include="ExpressionGraphBuilder.cs" />
+    <Compile Include="ExpressionGraphPropertiesWindow.xaml.cs">
+      <DependentUpon>ExpressionGraphPropertiesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Parameter.cs" />
     <Compile Include="ParameterFilters.cs" />
     <Compile Include="ParameterParser.cs" />
     <Compile Include="ParameterStatistic.cs" />
     <Compile Include="RegulatoryContext.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="SpecieExpressionGraph.cs" />
     <Compile Include="State.cs" />
     <Compile Include="TimeSerie.cs" />
     <Compile Include="Witness.cs" />
@@ -78,6 +83,10 @@
       <DependentUpon>WitnessFilterControls.xaml</DependentUpon>
     </Compile>
     <Compile Include="WitnessSet.cs" />
+    <Page Include="ExpressionGraphPropertiesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FilterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

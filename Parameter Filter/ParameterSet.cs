@@ -219,6 +219,24 @@ namespace Parameter_Filter
             }
         }
 
+        private RelayCommand _expressionGraphCommand;
+        public ICommand ExpressionGraphCommand
+        {
+            get
+            {
+                _expressionGraphCommand = _expressionGraphCommand ?? new RelayCommand(() => ExportExpressionGraph());
+                return _expressionGraphCommand;
+            }
+        }
+
+        private void ExportExpressionGraph()
+        {
+            new ExpressionGraphPropertiesWindow()
+            {
+                DataContext = new ExpressionGraphBuilder(RegulatoryContext, TimeSerie, Parameters.SelectMany(p => p.Witnesses))
+            }.Show();
+        }
+
         private RelayCommand _exitCommand;
         public ICommand ExitCommand
         {

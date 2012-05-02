@@ -22,6 +22,7 @@
                 <MenuItem Header="Export">
                     <MenuItem Header="Witness Plotter File" Command="{Binding ExportWitnessesCommand, Mode=OneTime}" />
                     <MenuItem Header="Witness Map" Command="{Binding ExportGraphCommand, Mode=OneTime}" IsEnabled="{Binding HasTimeSerie}" />
+                    <MenuItem Header="Expression Graph" Command="{Binding ExpressionGraphCommand, Mode=OneTime}" IsEnabled="{Binding HasTimeSerie}" />
                 </MenuItem>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand, Mode=OneTime}" />
             </MenuItem>

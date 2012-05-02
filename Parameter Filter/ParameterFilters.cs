@@ -424,8 +424,10 @@ namespace Parameter_Filter
 
                 _constrainedContextIndex = value;
 
-                ContextMinimum = set.RegulatoryContext.MinimalValues[set.RegulatoryContext.ContextMasks[_constrainedContextIndex]];
-                ContextMaximum = set.RegulatoryContext.MaximalValues[set.RegulatoryContext.ContextMasks[_constrainedContextIndex]];
+                ContextMinimum = set.RegulatoryContext.MinimalValues[string.Join("",
+                    set.RegulatoryContext.ContextMasks[ _constrainedContextIndex].TakeWhile(c => (c != '{')).ToArray())];
+                ContextMaximum = set.RegulatoryContext.MaximalValues[string.Join("",
+                    set.RegulatoryContext.ContextMasks[_constrainedContextIndex].TakeWhile(c => (c != '{')).ToArray())];
 
                 RaisePropertyChanged("ConstrainedContextIndex");
             }
