@@ -31,6 +31,19 @@
                 <MenuItem Header="Load Time Serie" Command="{Binding LoadTimeSerieCommand, Mode=OneTime}" IsEnabled="{Binding HasRegulatoryContext, Mode=OneWay}" />
                 <MenuItem Header="Create Time Serie" Command="{Binding CreateTimeSerieCommand, Mode=OneTime}" IsEnabled="{Binding HasRegulatoryContext, Mode=OneWay}" />
             </MenuItem>
+            <MenuItem Header="Data" >
+                <MenuItem Header="Sort" ItemsSource="{Binding SortOptions, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding Label, Mode=OneTime}" Command="{Binding SortCommand, Mode=OneTime}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </MenuItem>
+                <MenuItem Header="Display">
+                    <MenuItem Header="Parameters" IsEnabled="{Binding WitnessesDisplayed, Mode=OneWay}" Command="{Binding DisplayParametersCommand, Mode=OneTime}" />
+                    <MenuItem Header="Witnesses" IsEnabled="{Binding ParametersDisplayed, Mode=OneWay}" Command="{Binding DisplayWitnessesCommand, Mode=OneTime}" />
+                </MenuItem>
+            </MenuItem>
         </Menu>
 
         <StackPanel Grid.Row="1" Width="150">
@@ -50,12 +63,15 @@
 
         <local:ParameterStatistics Grid.ColumnSpan="3" Grid.Row="2" Margin="10,0,10,10" Width="600" DataContext="{Binding Statistic, Mode=OneTime}" />
         
-        <ListBox Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding Parameters, Mode=OneWay}" >
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
+        <ListBox Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding DisplayedItems, Mode=OneWay}" >
+            <ListBox.Resources>
+                <DataTemplate DataType="{x:Type local:Parameter}">
                     <local:ParameterInformation DataContext="{Binding}" Width="400" />
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:Witness}">
+                    <local:WitnessInformation DataContext="{Binding}" Width="400" />
+                </DataTemplate>
+            </ListBox.Resources>
         </ListBox>
     </Grid>
 </Window>

@@ -5,14 +5,18 @@ using System.Text;
 
 namespace Parameter_Filter
 {
-    public class Witness
+    public class Witness : ObservableObject
     {
         private ISet<Parameter> parameters;
         public IEnumerable<Parameter> Parameters { get { return parameters; } }
 
+        public int ParameterCount { get { return Parameters.Count(); } }
+
         public IEnumerable<State> Sequence { get; private set; }
 
         public int Length { get { return Sequence.Count(); } }
+
+        public string Mask { get { return this.ToString(); } }
 
         public Witness(string[] states)
         {
@@ -24,6 +28,8 @@ namespace Parameter_Filter
         public void AddParameter(Parameter parameter)
         {
             parameters.Add(parameter);
+
+            RaisePropertyChanged("ParameterCount");
         }
 
         public override string ToString()
@@ -33,10 +39,10 @@ namespace Parameter_Filter
 
         public override bool Equals(object obj)
         {
-            if ((obj == null) || !(obj is Witness))
+            Witness other = obj as Witness;
+            if (other == null)
                 return false;
 
-            Witness other = (Witness)obj;
             return this.Sequence.SequenceEqual(other.Sequence);
         }
 

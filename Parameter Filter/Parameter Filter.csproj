@@ -82,6 +82,9 @@
     <Compile Include="WitnessFilterControls.xaml.cs">
       <DependentUpon>WitnessFilterControls.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WitnessInformation.xaml.cs">
+      <DependentUpon>WitnessInformation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WitnessSet.cs" />
     <Page Include="ExpressionGraphPropertiesWindow.xaml">
       <SubType>Designer</SubType>
@@ -119,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WitnessFilterControls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WitnessInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
