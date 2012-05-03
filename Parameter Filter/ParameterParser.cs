@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace Parameter_Filter
                     else if (line.First() == '(')
                         param.AddWitness(witnessSet.GetWitness(line, param));
                     else
-                        param.Robustness = Double.Parse(line);
+                        param.Robustness = Double.Parse(line, CultureInfo.InvariantCulture);
                 }
 
                 yield return param;
