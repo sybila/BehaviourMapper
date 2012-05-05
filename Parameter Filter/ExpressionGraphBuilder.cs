@@ -55,6 +55,20 @@ namespace Parameter_Filter
             }
         }
 
+        private bool _highlightMeasurements;
+        public bool HighlightMeasurements
+        {
+            get { return _highlightMeasurements; }
+            set
+            {
+                if (value == _highlightMeasurements)
+                    return;
+
+                _highlightMeasurements = value;
+                RaisePropertyChanged("HighlightMeasurements");
+            }
+        }
+
         public ExpressionGraphBuilder(RegulatoryContext regulatoryContext, TimeSerie timeSerie, IEnumerable<Witness> witnesses)
         {
             this.regulatoryContext = regulatoryContext;
@@ -64,7 +78,8 @@ namespace Parameter_Filter
             Species = regulatoryContext.Species;
             SelectedSpecie = 0;
 
-            GridVisible = true;
+            GridVisible = false;
+            HighlightMeasurements = true;
         }
 
         #region Commands
@@ -93,7 +108,13 @@ namespace Parameter_Filter
                     foreach (Witness w in witnesses)
                         graph.MapWitness(w);
 
-                    graph.Export(diag.FileName, GridVisible);
+                    short modifiers = 0;
+                    if (GridVisible)
+                        modifiers |= SpecieExpressionGraph.GRID;
+                    if (HighlightMeasurements)
+                        modifiers |= SpecieExpressionGraph.HIGHLIGHT_MEASUREMENTS;
+
+                    graph.Export(diag.FileName, modifiers);
                 }
             }
 

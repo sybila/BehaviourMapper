@@ -8,6 +8,7 @@
             <ComboBox ItemsSource="{Binding Species, Mode=OneWay}" SelectedIndex="{Binding SelectedSpecie, Mode=TwoWay}" Margin="5,10,10,10" />
         </StackPanel>
         <CheckBox IsChecked="{Binding GridVisible, Mode=TwoWay}" Margin="10,10,10,5">Show grid</CheckBox>
-        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10,50,15,20" Command="{Binding ExportCommand, Mode=OneTime}">Export</Button> 
+        <CheckBox IsChecked="{Binding HighlightMeasurements, Mode=TwoWay}" Margin="10,10,10,5">Highlight Measurements</CheckBox>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10,25,15,20" Command="{Binding ExportCommand, Mode=OneTime}">Export</Button> 
     </StackPanel>
 </Window>
