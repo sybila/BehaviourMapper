@@ -39,7 +39,7 @@ namespace Parameter_Filter
                 {
                     Dictionary<string, string> activityLevels = s.Split('&').ToDictionary(al => al.Split('=')[0], al => al.Split('=')[1]);
 
-                    return new State(string.Join(",", regCon.Species.Select(sp => activityLevels[sp] ?? "-1")));
+                    return new State(string.Join(",", regCon.Species.Select(sp => (activityLevels.ContainsKey(sp) ? activityLevels[sp] : "-1"))));
                 })
                 .ToArray();
         }
