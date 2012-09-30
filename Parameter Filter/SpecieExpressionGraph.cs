@@ -6,10 +6,17 @@ using System.Xml.Linq;
 
 namespace Parameter_Filter
 {
+    using Transitions;
+
     class SpecieExpressionGraph
     {
         public static readonly short GRID = 1;
         public static readonly short HIGHLIGHT_MEASUREMENTS = 2;
+
+        private static readonly int WIDTH = 1000;
+        private static readonly int HEIGHT = 500;
+
+        private static readonly int STROKE_WIDTH = 2;
 
         private class Line
         {
@@ -35,20 +42,22 @@ namespace Parameter_Filter
                 if (targetValue == sourceValue)
                 {
                     return new XElement(xmlns + "line", new XAttribute("x1", (start + 60)), new XAttribute("x2", (end + 60)),
-                       new XAttribute("y1", (560 - ((500 * sourceValue) / valueRange))), new XAttribute("y2", (560 - ((500 * targetValue) / valueRange))),
-                       new XAttribute("style", string.Format("stroke:rgb(50,0,70);stroke-opacity:{0:0.000};stroke-width:2", ((double)Strength / witnessCount))));
+                       new XAttribute("y1", (HEIGHT + 60 - ((HEIGHT * sourceValue) / valueRange))),
+                       new XAttribute("y2", (HEIGHT + 60 - ((HEIGHT * targetValue) / valueRange))),
+                       new XAttribute("style", string.Format("stroke:rgb(50,0,70);stroke-opacity:{0:0.000};stroke-width:{1}", ((double)Strength / witnessCount), STROKE_WIDTH)));
                 }
 
                 return new XElement(xmlns + "path", new XAttribute("d", string.Format("M{0},{1} C{2} L{3},{4} C{5}",
-                        (start + 60), (560 - ((500 * sourceValue) / valueRange)),
-                        GetArc((start + 60), (560 - ((500 * sourceValue) / valueRange)), (start + 60 + ((end - start) / 3)),
-                            ((560 - ((500 * sourceValue) / valueRange)) + (Math.Sign(sourceValue - targetValue) * (100 / (valueRange)))), true),
-                            (end + 60 - ((end - start) / 3)), ((560 - ((500 * targetValue) / valueRange)) + (Math.Sign(targetValue - sourceValue) * (100 / (valueRange)))),
+                        (start + 60), (HEIGHT + 60 - ((HEIGHT * sourceValue) / valueRange)),
+                        GetArc((start + 60), (HEIGHT + 60 - ((HEIGHT * sourceValue) / valueRange)), (start + 60 + ((end - start) / 3)),
+                            ((HEIGHT + 60 - ((HEIGHT * sourceValue) / valueRange)) + (Math.Sign(sourceValue - targetValue) * (100 / (valueRange)))), true),
+                            (end + 60 - ((end - start) / 3)),
+                            ((HEIGHT + 60 - ((HEIGHT * targetValue) / valueRange)) + (Math.Sign(targetValue - sourceValue) * (100 / (valueRange)))),
                         GetArc((end + 60 - ((end - start) / 3)),
-                            ((560 - ((500 * targetValue) / valueRange)) + (Math.Sign(targetValue - sourceValue) * (100 / (valueRange)))),
-                            (end + 60), (560 - ((500 * targetValue) / valueRange)), false))),
-                    new XAttribute("style", string.Format("stroke:rgb(50,0,70);stroke-opacity:{0:0.000};stroke-width:2;fill:none",
-                        ((double)Strength / witnessCount))));
+                            ((HEIGHT + 60 - ((HEIGHT * targetValue) / valueRange)) + (Math.Sign(targetValue - sourceValue) * (100 / (valueRange)))),
+                            (end + 60), (HEIGHT + 60 - ((HEIGHT * targetValue) / valueRange)), false))),
+                    new XAttribute("style", string.Format("stroke:rgb(50,0,70);stroke-opacity:{0:0.000};stroke-width:{1};fill:none",
+                        ((double)Strength / witnessCount), STROKE_WIDTH)));
             }
 
             private string GetArc(int sourceX, int sourceY, int targetX, int targetY, bool convex)
@@ -93,7 +102,7 @@ namespace Parameter_Filter
         private int specieMin;
         private int specieMax;
 
-        private int witnessCount;
+        private int behaviourCount;
         private IList<Line> lines;
 
         public SpecieExpressionGraph(int specieIndex, RegulatoryContext regulatoryContext, TimeSerie timeSerie)
@@ -105,23 +114,23 @@ namespace Parameter_Filter
 
             xAxisPoints = new List<int>();
             for (int i = 0; i < timeSerie.Measurements.Count(); i++)
-                xAxisPoints.Add((1000 * i) / (timeSerie.Measurements.Count() - 1));
+                xAxisPoints.Add((WIDTH * i) / (timeSerie.Measurements.Count() - 1));
 
             specieMin = regulatoryContext.MinimalValues[specie];
             specieMax = regulatoryContext.MaximalValues[specie];
 
-            witnessCount = 0;
+            behaviourCount = 0;
             lines = new List<Line>();
         }
 
-        public void MapWitness(Witness w)
+        public void MapBehaviour(Behaviour behaviour)
         {
             int previousX = 0;
             IEnumerable<int> interMeasurementPath;
 
             for (int i = 1; i < timeSerie.Measurements.Count(); i++)
             {
-                IEnumerable<State> postMeasurementPath = w.Sequence
+                IEnumerable<State> postMeasurementPath = behaviour.Sequence
                     .SkipWhile(s => !s.Equals(timeSerie.Measurements.ElementAt(i - 1)));
 
                 interMeasurementPath = postMeasurementPath
@@ -131,8 +140,8 @@ namespace Parameter_Filter
 
                 for (int j = 1; j < interMeasurementPath.Count(); j++)
                 {
-                    int xCoordinate = ((((1000 / (timeSerie.Measurements.Count() - 1)) * j) / (interMeasurementPath.Count() - 1)) +
-                        ((i - 1) * (1000 / (timeSerie.Measurements.Count() - 1))));
+                    int xCoordinate = ((((WIDTH / (timeSerie.Measurements.Count() - 1)) * j) / (interMeasurementPath.Count() - 1)) +
+                        ((i - 1) * (WIDTH / (timeSerie.Measurements.Count() - 1))));
 
                     if (!xAxisPoints.Contains(xCoordinate))
                         xAxisPoints.Add(xCoordinate);
@@ -143,7 +152,7 @@ namespace Parameter_Filter
                 }
             }
 
-            witnessCount++;
+            behaviourCount++;
         }
 
         private void AddLine(Line line)
@@ -166,11 +175,11 @@ namespace Parameter_Filter
                 new XAttribute(XNamespace.Xmlns + "xlink", "http://www.w3.org/1999/xlink"),
                 new XElement(xmlns + "text", new XAttribute("x", 100), new XAttribute("y", 40), new XAttribute("text-anchor", "start"),
                     new XAttribute("font-size", "26"), new XAttribute("fill", "black"), string.Format("Expression profile of {0}", specie)),
-                new XElement(xmlns + "text", new XAttribute("x", 950), new XAttribute("y", 610), new XAttribute("text-anchor", "end"),
+                /*new XElement(xmlns + "text", new XAttribute("x", 950), new XAttribute("y", 610), new XAttribute("text-anchor", "end"),
                     new XAttribute("font-size", "18"), new XAttribute("fill", "black"), "Measurements"),
                 new XElement(xmlns + "text", new XAttribute("x", 20), new XAttribute("y", 300), new XAttribute("text-anchor", "middle"),
                     new XAttribute("style", "font-size:18;writing-mode:tb;glyph-orientation-vertical:0"), new XAttribute("fill", "black"),
-                    string.Format("{0} activity level", specie)),
+                    string.Format("{0} activity level", specie)),*/
                 Enumerable.Range(1, timeSerie.Measurements.Count()).Zip(xAxisPoints.Take(timeSerie.Measurements.Count()),
                     (m, x) => new
                     {
@@ -178,15 +187,15 @@ namespace Parameter_Filter
                         {
                             new XElement(xmlns + "rect",
                                 new XAttribute("width", ((20 + (10 * timeSerie.Measurements.First().ActivityLevels.Count())) / ((m == 1) ? 2 : 1))),
-                                new XAttribute("height", 530),
+                                new XAttribute("height", (HEIGHT + 30)),
                                 new XAttribute("x", ((m == 1) ? 60 : (x + 60 - ((20 + (10 * timeSerie.Measurements.First().ActivityLevels.Count())) / 2)))),
                                 new XAttribute("y", 60),
                                 new XAttribute("style", string.Format("stroke:rgb(50,50,50);stroke-width:0.25;fill:rgb(135,200,210);opacity:0.4"))),
-                            new XElement(xmlns + "text", new XAttribute("x", (x + 60)), new XAttribute("y", 585),
+                            new XElement(xmlns + "text", new XAttribute("x", (x + 60)), new XAttribute("y", (HEIGHT + 85)),
                                 new XAttribute("text-anchor", "middle"), new XAttribute("fill", "black"),
                                 (((modifiers & 2) > 0) ? timeSerie.Measurements.ElementAt(m - 1).ToString() : m.ToString())),
                             new XElement(xmlns + "line", new XAttribute("x1", (x + 60)), new XAttribute("x2", (x + 60)), new XAttribute("y1", 60),
-                                new XAttribute("y2", 570), new XAttribute("style", "stroke:rgb(50,50,50);stroke-opacity:0.5;stroke-width:0.25"))
+                                new XAttribute("y2", (HEIGHT + 70)), new XAttribute("style", "stroke:rgb(50,50,50);stroke-opacity:0.5;stroke-width:0.25"))
                         }
                     }).SelectMany(elms =>
                     {
@@ -217,11 +226,11 @@ namespace Parameter_Filter
                         else
                             return elms.Elements.Take(1);
                     }),
-                new XElement(xmlns + "line", new XAttribute("x1", 60), new XAttribute("x2", 1060), new XAttribute("y1", 570), new XAttribute("y2", 570),
+                new XElement(xmlns + "line", new XAttribute("x1", 60), new XAttribute("x2", (WIDTH + 60)), new XAttribute("y1", (HEIGHT + 70)), new XAttribute("y2", (HEIGHT + 70)),
                     new XAttribute("style", "stroke:rgb(50,50,50);stroke-width:3")),
-                new XElement(xmlns + "line", new XAttribute("x1", 60), new XAttribute("x2", 60), new XAttribute("y1", 60), new XAttribute("y2", 570),
+                new XElement(xmlns + "line", new XAttribute("x1", 60), new XAttribute("x2", 60), new XAttribute("y1", 60), new XAttribute("y2", (HEIGHT + 70)),
                     new XAttribute("style", "stroke:rgb(50,50,50);stroke-width:3")),
-                lines.Select(l => l.ToXml(xmlns, (specieMax - specieMin), witnessCount)));
+                lines.Select(l => l.ToXml(xmlns, (specieMax - specieMin), behaviourCount)));
 
             doc.Add(svg);
 

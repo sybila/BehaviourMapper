@@ -17,20 +17,40 @@ namespace Parameter_Filter
         public RegulatoryContext(int numOfRegulations, int numOfSpecies)
         {
             Species = new string[numOfSpecies];
+
+            for (int i = 0; i < numOfSpecies; i++)
+                Species[i] = string.Format("s{0}", i);
+
+            ContextMasks = new string[numOfRegulations];
             MinimalValues = new Dictionary<string, int>();
             MaximalValues = new Dictionary<string, int>();
 
-            for (int i = 0; i < numOfSpecies; i++)
-            {
-                Species[i] = string.Format("s{0}", i);
-                MinimalValues.Add(Species[i], 0);
-                MaximalValues.Add(Species[i], 1);
-            }
-
-            ContextMasks = new string[numOfRegulations];
-
             for (int i = 0; i < numOfRegulations; i++)
+            {
                 ContextMasks[i] = string.Format("v{0}", i);
+                MinimalValues.Add(ContextMasks[i], 0);
+                MaximalValues.Add(ContextMasks[i], 1);
+            }
+        }
+
+        private IEnumerable<int[]> ComputeContexts(IEnumerable<int> regulators)
+        {
+            return Enumerable.Range(0, (int)Math.Pow(2, regulators.Count()))
+                .Select(num =>
+                {
+                    List<int> context = new List<int>();
+                    int n = num;
+
+                    for (int i = 0; i < regulators.Count(); i++)
+                    {
+                        if ((n % 2) == 1)
+                            context.Add(regulators.ElementAt(i));
+
+                        n /= 2;
+                    }
+
+                    return context.ToArray();
+                });
         }
 
         public RegulatoryContext(string modelFile)
@@ -38,28 +58,21 @@ namespace Parameter_Filter
             XDocument doc = XDocument.Load(modelFile);
             IEnumerable<XElement> species = doc.Element("MODEL").Element("STRUCTURE").Elements("SPECIE");
 
-            Species = species.Select(e => e.Attribute("name").Value).ToArray();
+            Species = species.Zip(Enumerable.Range(0, species.Count()),
+                (elem, num) => ((elem.Attribute("name") != null) ? elem.Attribute("name").Value : string.Format("{0}", num))).ToArray();
 
-            var maskedSpecies = species
-                .SelectMany(e => e.Element("REGULATIONS").Elements("REGUL").Select(r => new { Specie = e, Regul = r.Attribute("mask").Value }))
-                .Select(reg => new
-                {
-                    Specie = reg.Specie,
-                    Mask = string.Format("{0}{{{1}}}",
-                        reg.Specie.Attribute("name").Value,
-                        string.Join(",", Enumerable.Range(0, reg.Regul.Length)
-                            .Where(i => reg.Regul[i] == '1')
-                            .Select(i => species.ElementAt(int.Parse(reg.Specie.Element("INTERACTIONS").Elements("INTER")
-                                .ElementAt(i).Attribute("source").Value)).Attribute("name").Value).ToArray()))
-                });
+            ContextMasks = Species
+                .Zip(species
+                    .Select(s => s.Elements("REGUL").Select(r => int.Parse(r.Attribute("source").Value)))
+                    .Select(r => ComputeContexts(r)),
+                    (name, cons) => new { Name = name, Cons = cons })
+                .SelectMany(ncon => ncon.Cons.Select(con => string.Format("{0}{{{1}}}",
+                        ncon.Name, string.Join(",", con.Select(i => Species[i]).ToArray())))).ToArray();
 
-            ContextMasks = maskedSpecies.Select(s => s.Mask).ToArray();
-            MinimalValues = species
-                .Zip(Species, (e, s) => new { Specie = s, Min = 0 })
-                .ToDictionary(sm => sm.Specie, sm => sm.Min);
-            MaximalValues = species
-                .Zip(Species, (e, s) => new { Specie = s, Max = int.Parse(e.Attribute("max").Value) })
-                .ToDictionary(sm => sm.Specie, sm => sm.Max);
+            MinimalValues = Species.ToDictionary(s => s, _ => 0);
+            MaximalValues = Species
+                .Zip(species, (name, elem) => new { Specie = name, Max = ((elem.Attribute("max") != null) ? int.Parse(elem.Attribute("max").Value) : 1) })
+                .ToDictionary(s => s.Specie, s => s.Max);
         }
     }
 }

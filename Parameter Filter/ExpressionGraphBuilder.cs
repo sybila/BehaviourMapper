@@ -7,11 +7,14 @@ using System.Windows.Input;
 
 namespace Parameter_Filter
 {
+    using Transitions;
+
     class ExpressionGraphBuilder : ObservableObject
     {
         private RegulatoryContext regulatoryContext;
         private TimeSerie timeSerie;
-        private IEnumerable<Witness> witnesses;
+        //private IEnumerable<Witness> witnesses;
+        private IEnumerable<Behaviour> behaviours;
 
         private IEnumerable<string> _species;
         public IEnumerable<string> Species
@@ -69,11 +72,13 @@ namespace Parameter_Filter
             }
         }
 
-        public ExpressionGraphBuilder(RegulatoryContext regulatoryContext, TimeSerie timeSerie, IEnumerable<Witness> witnesses)
+        public ExpressionGraphBuilder(RegulatoryContext regulatoryContext, TimeSerie timeSerie, IEnumerable<Parameter> parameters)
         {
             this.regulatoryContext = regulatoryContext;
             this.timeSerie = timeSerie;
-            this.witnesses = witnesses;
+            //this.witnesses = witnesses;
+
+            behaviours = parameters.SelectMany(p => p.Behaviours);
 
             Species = regulatoryContext.Species;
             SelectedSpecie = 0;
@@ -105,8 +110,8 @@ namespace Parameter_Filter
                 {
                     SpecieExpressionGraph graph = new SpecieExpressionGraph(SelectedSpecie, regulatoryContext, timeSerie);
 
-                    foreach (Witness w in witnesses)
-                        graph.MapWitness(w);
+                    foreach (Behaviour b in behaviours)
+                        graph.MapBehaviour(b);
 
                     short modifiers = 0;
                     if (GridVisible)

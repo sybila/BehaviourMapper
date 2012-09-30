@@ -9,16 +9,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Parameter_Filter
+namespace Parameter_Filter.Controls
 {
     /// <summary>
-    /// Interaction logic for ExpressionGraphPropertiesWindow.xaml
+    /// Interaction logic for ParameterValueStatistic.xaml
     /// </summary>
-    public partial class ExpressionGraphPropertiesWindow : Window
+    public partial class ParameterValueStatistic : UserControl
     {
-        public ExpressionGraphPropertiesWindow()
+        public ParameterValueStatistic()
         {
             InitializeComponent();
         }

@@ -9,29 +9,17 @@ namespace Parameter_Filter
 {
     public static class ParameterParser
     {
-        public static IEnumerable<Parameter> Parse(string filePath, WitnessSet witnessSet)
+        public static IEnumerable<Parameter> Parse(string filePath)
         {
             using (StreamReader sr = new StreamReader(filePath))
             {
-                Parameter param = null;
-
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (line.First() == '[')
-                    {
-                        if (param != null)
-                            yield return param;
+                    Parameter param = new Parameter(line);
 
-                        param = new Parameter(line.Split(new string[] { "[", "]" }, StringSplitOptions.RemoveEmptyEntries)[0]);
-                    }
-                    else if (line.First() == '(')
-                        param.AddWitness(witnessSet.GetWitness(line, param));
-                    else
-                        param.Robustness = Double.Parse(line, CultureInfo.InvariantCulture);
+                    yield return param;
                 }
-
-                yield return param;
             }
         }
     }

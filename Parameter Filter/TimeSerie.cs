@@ -7,6 +7,8 @@ using System.Xml.Linq;
 
 namespace Parameter_Filter
 {
+    using Transitions;
+
     public class TimeSerie
     {
         public IEnumerable<State> Measurements { get; private set; }
@@ -29,19 +31,30 @@ namespace Parameter_Filter
         public TimeSerie(string fileName, RegulatoryContext regCon)
         {
             XDocument doc = XDocument.Load(fileName);
-            IEnumerable<XElement> states = doc.Element("MODEL").Element("AUTOMATON").Elements("STATE");
+            IEnumerable<XElement> states = doc.Element("MODEL").Element("SERIES").Elements("EXPR");
 
             Measurements = states
-                .SelectMany(e => e.Element("TRANSITIONS").Elements("TRANS")
-                    .Select(t => t.Attribute("label").Value)
-                    .Where(l => ((l != "tt") && (l != "ff"))))
-                .Select(s =>
+                .Select(s => 
                 {
-                    Dictionary<string, string> activityLevels = s.Split('&').ToDictionary(al => al.Split('=')[0], al => al.Split('=')[1]);
+                    Dictionary<string, string> activityLevels = s.Attribute("values").Value
+                        .Split(new string[] {"&", "(", ")"}, StringSplitOptions.RemoveEmptyEntries)
+                        .ToDictionary(al => al.Split('=')[0], al => al.Split('=')[1]);
 
-                    return new State(string.Join(",", regCon.Species.Select(sp => (activityLevels.ContainsKey(sp) ? activityLevels[sp] : "-1"))));
+                    return string.Join(",", regCon.Species.Select(sp => (activityLevels.ContainsKey(sp) ? activityLevels[sp] : "-1")));
                 })
+                .Zip(Enumerable.Range(0, states.Count()), (state, buchiState) => new State(string.Format("({0};{1})", state, buchiState)))
                 .ToArray();
+        }
+
+        public State GetNext(State measurement)
+        {
+            for (int i = 0; i < (Measurements.Count() - 1); i++)
+            {
+                if (measurement.Equals(Measurements.ElementAt(i)))
+                    return (Measurements.ElementAt(i + 1));
+            }
+
+            return null;
         }
 
         public override string ToString()

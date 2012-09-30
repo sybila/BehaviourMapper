@@ -11,8 +11,7 @@
     <RootNamespace>Parameter_Filter</RootNamespace>
     <AssemblyName>Parameter Filter</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -65,7 +64,9 @@
     </ApplicationDefinition>
     <Compile Include="ContextConstraint.cs" />
     <Compile Include="ExpressionGraphBuilder.cs" />
-    <Compile Include="ExpressionGraphPropertiesWindow.xaml.cs">
+    <Compile Include="Transitions\Behaviour.cs" />
+    <Compile Include="Transitions\BehaviourExtensions.cs" />
+    <Compile Include="Windows\ExpressionGraphPropertiesWindow.xaml.cs">
       <DependentUpon>ExpressionGraphPropertiesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Parameter.cs" />
@@ -75,22 +76,23 @@
     <Compile Include="RegulatoryContext.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="SpecieExpressionGraph.cs" />
-    <Compile Include="State.cs" />
+    <Compile Include="Transitions\State.cs" />
     <Compile Include="TimeSerie.cs" />
-    <Compile Include="Witness.cs" />
-    <Compile Include="WitnessFilter.cs" />
-    <Compile Include="WitnessFilterControls.xaml.cs">
+    <Compile Include="Transitions\Transition.cs" />
+    <None Include="Witness.cs" />
+    <None Include="WitnessFilter.cs" />
+    <None Include="WitnessFilterControls.xaml.cs">
       <DependentUpon>WitnessFilterControls.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WitnessInformation.xaml.cs">
+    </None>
+    <None Include="WitnessInformation.xaml.cs">
       <DependentUpon>WitnessInformation.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WitnessSet.cs" />
-    <Page Include="ExpressionGraphPropertiesWindow.xaml">
+    </None>
+    <None Include="WitnessSet.cs" />
+    <Page Include="Windows\ExpressionGraphPropertiesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FilterControls.xaml">
+    <Page Include="Controls\FilterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,44 +104,44 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FilterControls.xaml.cs">
+    <Compile Include="Controls\FilterControls.xaml.cs">
       <DependentUpon>FilterControls.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ParameterInformation.xaml">
+    <Page Include="Controls\ParameterInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ParameterStatistics.xaml">
+    <Page Include="Controls\ParameterStatistics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ParameterValueStatistic.xaml">
+    <Page Include="Controls\ParameterValueStatistic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WitnessFilterControls.xaml">
+    <None Include="WitnessFilterControls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WitnessInformation.xaml">
+    </None>
+    <None Include="WitnessInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ObservableObject.cs" />
-    <Compile Include="ParameterInformation.xaml.cs">
+    <Compile Include="Controls\ParameterInformation.xaml.cs">
       <DependentUpon>ParameterInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="ParameterSet.cs" />
-    <Compile Include="ParameterStatistics.xaml.cs">
+    <Compile Include="Controls\ParameterStatistics.xaml.cs">
       <DependentUpon>ParameterStatistics.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ParameterValueStatistic.xaml.cs">
+    <Compile Include="Controls\ParameterValueStatistic.xaml.cs">
       <DependentUpon>ParameterValueStatistic.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">

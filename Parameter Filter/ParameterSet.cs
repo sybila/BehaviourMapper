@@ -10,24 +10,25 @@ using System.Windows.Input;
 
 namespace Parameter_Filter
 {
-    enum SortOption { Length, Parameter_Count, Robustness, Shortest_Witness, Witness_Count }
+    using Windows;
+
+    enum SortOption { Cost, /*Parameter_count,*/ Possible_behaviours, Robustness }
 
     public class ParameterSet : ObservableObject
     {
         private static readonly Dictionary<SortOption, string> sortOptionHeaders = new Dictionary<SortOption, string>()
         {
-            { SortOption.Length, "By length" },
-            { SortOption.Parameter_Count, "By count of parameters" },
-            { SortOption.Robustness, "By robustness" },
-            { SortOption.Shortest_Witness, "By shortest witness length"},
-            { SortOption.Witness_Count, "By count of witnesses" }
+            { SortOption.Cost, "By cost" },
+            //{ SortOption.Parameter_count, "By count of parameters" },
+            { SortOption.Possible_behaviours, "By count of possible behaviours" },
+            { SortOption.Robustness, "By robustness" }
         };
 
-        private static readonly ISet<SortOption> parameterSortOptions = new HashSet<SortOption>() { SortOption.Robustness, SortOption.Shortest_Witness, SortOption.Witness_Count };
+        private static readonly ISet<SortOption> parameterSortOptions = new HashSet<SortOption>() { SortOption.Cost, SortOption.Possible_behaviours, SortOption.Robustness };
 
         public int ParameterCount { get { return ((Parameters == null) ? 0 : Parameters.Count()); } }
-        public int WitnessCount { get { return ((Parameters == null) ? 0 : Witnesses.Count()); } }
-        public int DistinctWitnessCount { get { return ((Parameters == null) ? 0 : DistinctWitnesses.Count()); } }
+        //public int WitnessCount { get { return ((Parameters == null) ? 0 : Witnesses.Count()); } }
+        //public int DistinctWitnessCount { get { return ((Parameters == null) ? 0 : DistinctWitnesses.Count()); } }
 
         private IEnumerable<Parameter> parameters;
         private IEnumerable<Parameter> _filteredParameters;
@@ -40,11 +41,11 @@ namespace Parameter_Filter
                     .Where(p => Filters.GetActiveFilters().All(f => f(p)))
                     .OrderByDescending(p => p, parameterComparer)
                     .ToArray();
-                RaisePropertyChanged("DisplayedItems");
+                RaisePropertyChanged("Parameters");
             }
         }
 
-        private WitnessSet witnesses;
+        /*private WitnessSet witnesses;
         private IEnumerable<Witness> _filteredWitnesses;
         private IEnumerable<Witness> _distinctWitnesses;
         public IEnumerable<Witness> Witnesses
@@ -62,13 +63,13 @@ namespace Parameter_Filter
                 RaisePropertyChanged("DisplayedItems");
             }
         }
-        public IEnumerable<Witness> DistinctWitnesses { get { return _distinctWitnesses; } }
+        public IEnumerable<Witness> DistinctWitnesses { get { return _distinctWitnesses; } }*/
 
         public RegulatoryContext RegulatoryContext { get; private set; }
         public TimeSerie TimeSerie { get; private set; }
 
         public ParameterFilters Filters { get; private set; }
-        public WitnessFilter WitnessFilters { get; private set; }
+        //public WitnessFilter WitnessFilters { get; private set; }
 
         public ParameterStatistic Statistic { get; private set; }
 
@@ -88,23 +89,23 @@ namespace Parameter_Filter
                 if (_parametersDisplayed)
                 {
                     parameterComparer.ResetPriorities();
-                    lastSelectedSortOption = SortOption.Shortest_Witness;
+                    lastSelectedSortOption = SortOption.Cost;
                 }
                 else
                 {
-                    witnessComparer.ResetPriorities();
-                    lastSelectedSortOption = SortOption.Length;
+                    //witnessComparer.ResetPriorities();
+                    //lastSelectedSortOption = SortOption.Parameter_count;
                 }
 
                 RaisePropertyChanged("ParametersDisplayed");
-                RaisePropertyChanged("WitnessesDisplayed");
+                //RaisePropertyChanged("WitnessesDisplayed");
                 RaisePropertyChanged("DisplayedItems");
                 RaisePropertyChanged("SortOptions");
             }
         }
-        public bool WitnessesDisplayed { get { return !_parametersDisplayed; } }
+        //public bool WitnessesDisplayed { get { return !_parametersDisplayed; } }
 
-        public IEnumerable<object> DisplayedItems
+        /*public IEnumerable<object> DisplayedItems
         {
             get
             {
@@ -113,7 +114,7 @@ namespace Parameter_Filter
                 else
                     return DistinctWitnesses;
             }
-        }
+        }*/
 
         #endregion
 
@@ -132,8 +133,8 @@ namespace Parameter_Filter
             public void ResetPriorities()
             {
                 sortOptionPriorities.Clear();
-                sortOptionPriorities.Add(SortOption.Shortest_Witness);
-                sortOptionPriorities.Add(SortOption.Witness_Count);
+                sortOptionPriorities.Add(SortOption.Cost);
+                sortOptionPriorities.Add(SortOption.Possible_behaviours);
                 sortOptionPriorities.Add(SortOption.Robustness);
             }
 
@@ -160,22 +161,22 @@ namespace Parameter_Filter
                 {
                     switch (o)
                     {
+                        case SortOption.Cost:
+                            {
+                                if (x.Cost != y.Cost)
+                                    return (y.Cost - x.Cost);
+                                break;
+                            }
+                        case SortOption.Possible_behaviours:
+                            {
+                                if (x.PossibleBehaviours != y.PossibleBehaviours)
+                                    return (x.PossibleBehaviours - y.PossibleBehaviours);
+                                break;
+                            }
                         case SortOption.Robustness:
                             {
                                 if (x.Robustness != y.Robustness)
                                     return Math.Sign(x.Robustness - y.Robustness);
-                                break;
-                            }
-                        case SortOption.Shortest_Witness:
-                            {
-                                if (x.ShortestWitness != y.ShortestWitness)
-                                    return (y.ShortestWitness - x.ShortestWitness);
-                                break;
-                            }
-                        case SortOption.Witness_Count:
-                            {
-                                if (x.WitnessCount != y.WitnessCount)
-                                    return (x.WitnessCount - y.WitnessCount);
                                 break;
                             }
                         default: break;
@@ -186,7 +187,7 @@ namespace Parameter_Filter
             }
         }
 
-        private class WitnessComparer : IComparer<Witness>
+        /*private class WitnessComparer : IComparer<Witness>
         {
             private List<SortOption> sortOptionPriorities;
 
@@ -244,10 +245,10 @@ namespace Parameter_Filter
 
                 return 0;
             }
-        }
+        }*/
 
         private ParameterComparer parameterComparer = new ParameterComparer();
-        private WitnessComparer witnessComparer = new WitnessComparer();
+        //private WitnessComparer witnessComparer = new WitnessComparer();
 
         public IEnumerable<object> SortOptions
         {
@@ -263,7 +264,7 @@ namespace Parameter_Filter
                             if (ParametersDisplayed)
                                 parameterComparer.MoveOptionToTop(o);
                             else
-                                witnessComparer.MoveOptionToTop(o);
+                                //witnessComparer.MoveOptionToTop(o);
 
                             lastSelectedSortOption = o;
 
@@ -280,10 +281,10 @@ namespace Parameter_Filter
 
         public ParameterSet()
         {
-            witnesses = new WitnessSet();
+            //witnesses = new WitnessSet();
 
             Filters = new ParameterFilters(this);
-            WitnessFilters = new WitnessFilter(this);
+            //WitnessFilters = new WitnessFilter(this);
 
             Statistic = new ParameterStatistic(this);
 
@@ -297,15 +298,15 @@ namespace Parameter_Filter
             else
                 Parameters = parameters;
 
-            Witnesses = Parameters.SelectMany(p => p.Witnesses);
+            //Witnesses = Parameters.SelectMany(p => p.Witnesses);
 
             RaisePropertyChanged("ParameterCount");
-            RaisePropertyChanged("WitnessCount");
-            RaisePropertyChanged("DistinctWitnessCount");
+            //RaisePropertyChanged("WitnessCount");
+            //RaisePropertyChanged("DistinctWitnessCount");
             Statistic.Refresh();
         }
 
-        public void RefreshWitnesses(bool tighten)
+        /*public void RefreshWitnesses(bool tighten)
         {
             foreach(Parameter p in parameters)
                 p.FilterWitnesses(WitnessFilters.GetActiveFilters().ToArray(), tighten);
@@ -316,7 +317,7 @@ namespace Parameter_Filter
 
             RaisePropertyChanged("WitnessCount");
             RaisePropertyChanged("DistinctWitnessCount");
-        }
+        }*/
 
         public bool HasRegulatoryContext { get { return (RegulatoryContext != null); } }
         public bool HasTimeSerie { get { return (TimeSerie != null); } }
@@ -345,19 +346,19 @@ namespace Parameter_Filter
 
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    parameters = ParameterParser.Parse(diag.FileName, witnesses).ToArray();
+                    parameters = ParameterParser.Parse(diag.FileName).ToArray();
                     Parameters = parameters;
-                    Witnesses = Parameters.SelectMany(p => p.Witnesses).ToArray();
+                    //Witnesses = Parameters.SelectMany(p => p.Witnesses).ToArray();
 
                     if (RegulatoryContext == null)
                         RegulatoryContext = new RegulatoryContext(parameters.First().Values.Count(),
-                            parameters.First().Witnesses.First().Sequence.First().ActivityLevels.Count());
+                            parameters.First().Transitions.First().InitialState.ActivityLevels.Count());
 
                     foreach (Parameter p in parameters)
                         p.CreateMask(RegulatoryContext);
 
                     Filters.SetBounds(parameters);
-                    WitnessFilters.SetBounds(witnesses);
+                    //WitnessFilters.SetBounds(witnesses);
 
                     Filters.RefreshRegulatoryContexts();
 
@@ -366,7 +367,7 @@ namespace Parameter_Filter
             }
         }
 
-        private RelayCommand _exportWitnessesCommand;
+        /*private RelayCommand _exportWitnessesCommand;
         public ICommand ExportWitnessesCommand
         {
             get
@@ -374,9 +375,9 @@ namespace Parameter_Filter
                 _exportWitnessesCommand = _exportWitnessesCommand ?? new RelayCommand(() => ExportWitnesses());
                 return _exportWitnessesCommand;
             }
-        }
+        }*/
 
-        private void ExportWitnesses()
+        /*private void ExportWitnesses()
         {
             using (System.Windows.Forms.SaveFileDialog diag = new System.Windows.Forms.SaveFileDialog())
             {
@@ -386,9 +387,9 @@ namespace Parameter_Filter
                 if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     ExportWitnesses(diag.FileName);
             }
-        }
+        }*/
 
-        private void ExportWitnesses(string fileName)
+        /*private void ExportWitnesses(string fileName)
         {
             using (StreamWriter sw = new StreamWriter(fileName))
             {
@@ -398,9 +399,9 @@ namespace Parameter_Filter
                 foreach (Witness w in Parameters.SelectMany(p => p.Witnesses))
                     sw.WriteLine(w.ToString());
             }
-        }
+        }*/
 
-        private RelayCommand _exportGraphCommand;
+        /*private RelayCommand _exportGraphCommand;
         public ICommand ExportGraphCommand
         {
             get
@@ -408,9 +409,9 @@ namespace Parameter_Filter
                 _exportGraphCommand = _exportGraphCommand ?? new RelayCommand(() => ExportGraph());
                 return _exportGraphCommand;
             }
-        }
+        }*/
 
-        private void ExportGraph()
+        /*private void ExportGraph()
         {
             using (System.Windows.Forms.SaveFileDialog diag = new System.Windows.Forms.SaveFileDialog())
             {
@@ -439,7 +440,7 @@ namespace Parameter_Filter
                     File.Delete(tmp);
                 }
             }
-        }
+        }*/
 
         private RelayCommand _expressionGraphCommand;
         public ICommand ExpressionGraphCommand
@@ -455,7 +456,7 @@ namespace Parameter_Filter
         {
             new ExpressionGraphPropertiesWindow()
             {
-                DataContext = new ExpressionGraphBuilder(RegulatoryContext, TimeSerie, Parameters.SelectMany(p => p.Witnesses))
+                DataContext = new ExpressionGraphBuilder(RegulatoryContext, TimeSerie, Parameters)
             }.Show();
         }
 

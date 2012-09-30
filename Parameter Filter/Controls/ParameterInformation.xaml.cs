@@ -12,14 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Parameter_Filter
+namespace Parameter_Filter.Controls
 {
     /// <summary>
-    /// Interaction logic for ParameterValueStatistic.xaml
+    /// Interaction logic for ParameterInformation.xaml
     /// </summary>
-    public partial class ParameterValueStatistic : UserControl
+    public partial class ParameterInformation : UserControl
     {
-        public ParameterValueStatistic()
+        public ParameterInformation()
         {
             InitializeComponent();
         }

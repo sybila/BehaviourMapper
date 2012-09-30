@@ -15,113 +15,113 @@ namespace Parameter_Filter
         private ParameterSet set;
         private Subject<Unit> filterChange;
 
-        private int _minimumWitnessCount;
-        public int MinimumWitnessCount
+        private int _minimumPossibleBehaviours;
+        public int MinimumPossibleBehaviours
         {
-            get { return _minimumWitnessCount; }
+            get { return _minimumPossibleBehaviours; }
             set
             {
-                if (value == _minimumWitnessCount)
+                if (value == _minimumPossibleBehaviours)
                     return;
 
-                _minimumWitnessCount = value;
+                _minimumPossibleBehaviours = value;
 
-                if (LowerWitnessCountBound < _minimumWitnessCount)
-                    LowerWitnessCountBound = _minimumWitnessCount;
-                if (UpperWitnessCountBound < _minimumWitnessCount)
-                    UpperWitnessCountBound = _minimumWitnessCount;
+                if (LowerPossibleBehavioursBound < _minimumPossibleBehaviours)
+                    LowerPossibleBehavioursBound = _minimumPossibleBehaviours;
+                if (UpperPossibleBehavioursBound < _minimumPossibleBehaviours)
+                    UpperPossibleBehavioursBound = _minimumPossibleBehaviours;
 
-                RaisePropertyChanged("MinimumWitnessCount");
+                RaisePropertyChanged("MinimumPossibleBehaviours");
             }
         }
 
-        private int _maximumWitnessCount;
-        public int MaximumWitnessCount
+        private int _maximumPossibleBehaviours;
+        public int MaximumPossibleBehaviours
         {
-            get { return _maximumWitnessCount; }
+            get { return _maximumPossibleBehaviours; }
             set
             {
-                if (value == _maximumWitnessCount)
+                if (value == _maximumPossibleBehaviours)
                     return;
 
-                _maximumWitnessCount = value;
+                _maximumPossibleBehaviours = value;
 
-                if (LowerWitnessCountBound > _maximumWitnessCount)
-                    LowerWitnessCountBound = _maximumWitnessCount;
-                if (UpperWitnessCountBound > _maximumWitnessCount)
-                    UpperWitnessCountBound = _maximumWitnessCount;
+                if (LowerPossibleBehavioursBound > _maximumPossibleBehaviours)
+                    LowerPossibleBehavioursBound = _maximumPossibleBehaviours;
+                if (UpperPossibleBehavioursBound > _maximumPossibleBehaviours)
+                    UpperPossibleBehavioursBound = _maximumPossibleBehaviours;
 
-                RaisePropertyChanged("MaximumWitnessCount");
+                RaisePropertyChanged("MaximumPossibleBehaviours");
             }
         }
 
-        private bool _witnessCountLowerBoundActive;
-        public bool WitnessCountLowerBoundActive
+        private bool _possibleBehavioursLowerBoundActive;
+        public bool PossibleBehavioursLowerBoundActive
         {
-            get { return _witnessCountLowerBoundActive; }
+            get { return _possibleBehavioursLowerBoundActive; }
             set
             {
-                if (value == _witnessCountLowerBoundActive)
+                if (value == _possibleBehavioursLowerBoundActive)
                     return;
 
-                _witnessCountLowerBoundActive = value;
-                RaisePropertyChanged("WitnessCountLowerBoundActive");
+                _possibleBehavioursLowerBoundActive = value;
+                RaisePropertyChanged("PossibleBehavioursLowerBoundActive");
 
-                set.Refresh(_witnessCountLowerBoundActive);
+                set.Refresh(_possibleBehavioursLowerBoundActive);
             }
         }
 
-        private bool _witnessCountUpperBoundActive;
-        public bool WitnessCountUpperBoundActive
+        private bool _possibleBehavioursUpperBoundActive;
+        public bool PossibleBehavioursUpperBoundActive
         {
-            get { return _witnessCountUpperBoundActive; }
+            get { return _possibleBehavioursUpperBoundActive; }
             set
             {
-                if (value == _witnessCountUpperBoundActive)
+                if (value == _possibleBehavioursUpperBoundActive)
                     return;
 
-                _witnessCountUpperBoundActive = value;
-                RaisePropertyChanged("WitnessCountUpperBoundActive");
+                _possibleBehavioursUpperBoundActive = value;
+                RaisePropertyChanged("PossibleBehavioursUpperBoundActive");
 
-                set.Refresh(_witnessCountUpperBoundActive);
+                set.Refresh(_possibleBehavioursUpperBoundActive);
             }
         }
 
-        private int _lowerWitnessCountBound;
-        public int LowerWitnessCountBound
+        private int _lowerPossibleBehavioursBound;
+        public int LowerPossibleBehavioursBound
         {
-            get { return _lowerWitnessCountBound; }
+            get { return _lowerPossibleBehavioursBound; }
             set
             {
-                if (value == _lowerWitnessCountBound)
+                if (value == _lowerPossibleBehavioursBound)
                     return;
 
-                _lowerWitnessCountBound = value;
-                RaisePropertyChanged("LowerWitnessCountBound");
+                _lowerPossibleBehavioursBound = value;
+                RaisePropertyChanged("LowerPossibleBehavioursBound");
 
-                if (WitnessCountLowerBoundActive)
+                if (PossibleBehavioursLowerBoundActive)
                     filterChange.OnNext(Unit.Default);
             }
         }
 
-        private int _upperWitnessCountBound;
-        public int UpperWitnessCountBound
+        private int _upperPossibleBehavioursBound;
+        public int UpperPossibleBehavioursBound
         {
-            get { return _upperWitnessCountBound; }
+            get { return _upperPossibleBehavioursBound; }
             set
             {
-                if (value == _upperWitnessCountBound)
+                if (value == _upperPossibleBehavioursBound)
                     return;
 
-                _upperWitnessCountBound = value;
-                RaisePropertyChanged("UpperWitnessCountBound");
+                _upperPossibleBehavioursBound = value;
+                RaisePropertyChanged("UpperPossibleBehavioursBound");
 
-                if (WitnessCountUpperBoundActive)
+                if (PossibleBehavioursUpperBoundActive)
                     filterChange.OnNext(Unit.Default);
             }
         }
 
-        private int _shortestWitness;
+        /*private int _shortestWitness;
         public int ShortestWitness
         {
             get { return _shortestWitness; }
@@ -301,7 +301,7 @@ namespace Parameter_Filter
                 if (AllWitnessLengthUpperBoundActive)
                     filterChange.OnNext(Unit.Default);
             }
-        }
+        }*/
 
         private bool _robustnessLowerBoundActive;
         public bool RobustnessLowerBoundActive
@@ -425,7 +425,7 @@ namespace Parameter_Filter
                 _constrainedContextIndex = value;
 
                 ContextMinimum = set.RegulatoryContext.MinimalValues[string.Join("",
-                    set.RegulatoryContext.ContextMasks[ _constrainedContextIndex].TakeWhile(c => (c != '{')).ToArray())];
+                    set.RegulatoryContext.ContextMasks[_constrainedContextIndex].TakeWhile(c => (c != '{')).ToArray())];
                 ContextMaximum = set.RegulatoryContext.MaximalValues[string.Join("",
                     set.RegulatoryContext.ContextMasks[_constrainedContextIndex].TakeWhile(c => (c != '{')).ToArray())];
 
@@ -508,20 +508,20 @@ namespace Parameter_Filter
                 .Throttle(TimeSpan.FromSeconds(0.5))
                 .Subscribe(_ => set.Refresh(false));
 
-            WitnessCountLowerBoundActive = false;
-            WitnessCountUpperBoundActive = false;
+            PossibleBehavioursLowerBoundActive = false;
+            PossibleBehavioursUpperBoundActive = false;
 
             ContextConstraints = new ObservableCollection<ContextConstraint>();
         }
 
         public void SetBounds(IEnumerable<Parameter> parameters)
         {
-            MinimumWitnessCount = parameters.Select(p => p.WitnessCount).Min();
-            MaximumWitnessCount = parameters.Select(p => p.WitnessCount).Max();
+            MinimumPossibleBehaviours = parameters.Select(p => p.PossibleBehaviours).Min();
+            MaximumPossibleBehaviours = parameters.Select(p => p.PossibleBehaviours).Max();
 
-            IEnumerable<Witness> witnesses = parameters.SelectMany(p => p.Witnesses);
+            //IEnumerable<Witness> witnesses = parameters.SelectMany(p => p.Witnesses);
 
-            if (witnesses.Any(x => (x != null)))
+            /*if (witnesses.Any(x => (x != null)))
             {
                 ShortestWitness = witnesses.Select(w => w.Length).Min();
                 LongestWitness = witnesses.Select(w => w.Length).Max();
@@ -530,7 +530,7 @@ namespace Parameter_Filter
             {
                 ShortestWitness = 0;
                 LongestWitness = 0;
-            }
+            }*/
 
             LowestRobustness = parameters.Select(p => p.Robustness).Min();
             HighestRobustness = parameters.Select(p => p.Robustness).Max();
@@ -543,11 +543,11 @@ namespace Parameter_Filter
 
         public IEnumerable<Predicate<Parameter>> GetActiveFilters()
         {
-            if (WitnessCountLowerBoundActive)
-                yield return (p => p.WitnessCount >= LowerWitnessCountBound);
-            if (WitnessCountUpperBoundActive)
-                yield return (p => p.WitnessCount <= UpperWitnessCountBound);
-
+            if (PossibleBehavioursLowerBoundActive)
+                yield return (p => p.PossibleBehaviours >= LowerPossibleBehavioursBound);
+            if (PossibleBehavioursUpperBoundActive)
+                yield return (p => p.PossibleBehaviours <= UpperPossibleBehavioursBound);
+            /*
             if (WitnessLengthLowerBoundActive)
                 yield return (p => p.Witnesses.Any(w => w.Length >= LowerWitnessLengthBound));
             if (WitnessLengthUpperBoundActive)
@@ -557,7 +557,7 @@ namespace Parameter_Filter
                 yield return (p => p.Witnesses.All(w => w.Length >= LowerAllWitnessLengthBound));
             if (AllWitnessLengthUpperBoundActive)
                 yield return (p => p.Witnesses.All(w => w.Length <= UpperAllWitnessLengthBound));
-
+            */
             if (RobustnessLowerBoundActive)
                 yield return (p => p.Robustness >= LowerRobustnessBound);
             if (RobustnessUpperBoundActive)

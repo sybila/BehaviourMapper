@@ -1,4 +1,4 @@
-﻿<Window x:Class="Parameter_Filter.ExpressionGraphPropertiesWindow"
+﻿<Window x:Class="Parameter_Filter.Windows.ExpressionGraphPropertiesWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Export Expression Graph" Height="200" Width="300">
