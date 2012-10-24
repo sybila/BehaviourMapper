@@ -1,7 +1,21 @@
-Parameter Filter project
+ehaviour Mapper project
 Copyright (c) 2012 - George Kolcak
 Systems Biology Laboratory of Masaryk University, Brno
 open-source 2012, GNU GPL v3
 
-Execution:
-	Parameter Filter has a simple Graphical User Interface that allows the user to easily import, manipulate and export parameter sets.
+	Behaviour Mapper is a Java CLI tool which parses a Parsybone output file ( http://sybila.fi.muni.cz/tools ) and produces a graph representation of its respective transition system.
+
+Requirements:
+	Java Runtime Environment 7.x or newer. 
+
+Arguments:
+	java -jar BehaviourMapper.jar <input_file> <output_file>
+	input_file - Location of Behaviour Mapper input file (Parsybone output file).
+	output_file - The file in which the xgmml graph will be stored. The extension .xgmml is added automatically.
+
+Output:
+	An XGMML graph. To display the file we suggest usage of the Cytoscape tool ( http://www.cytoscape.org/ )
+	The width and height of graph nodes is directly proportional to number of inbound and outbound transitions (respectively) of the state it represents.
+	Nodes representing a state that corresponding to a measurement in the time series are highlighted.
+	The width of an edge is directly proportional to the number of parametrizations sharing the edge in their time series walks.
+
